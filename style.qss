@@ -1,0 +1,126 @@
+/* Widgets */
+#widget_2, #widget {
+    background-color: #E0E0E0;
+}
+
+/* Nút change_btn */
+QPushButton#change_btn {
+    background-color: white;
+    border: none;
+    text-align: left;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+QPushButton#change_btn:hover {
+    background-color: #E0E0E0;
+}
+
+/* Nút logout_btn */
+QPushButton#logout_btn {
+    background-color: #E0E0E0;
+    border: none;
+    border-radius: 10px;
+}
+
+QPushButton#logout_btn:hover {
+    background-color: #aad4f2;
+    border-radius: 10px;
+}
+
+QPushButton#logout_btn:focus {
+    outline: none;
+    border: none;
+    background-color: #aad4f2;
+    border-radius: 10px;
+}
+
+QPushButton#logout_btn:checked {
+    background-color: #aad4f2;
+}
+
+/* Nút logout_btn2 */
+QPushButton#logout_btn2 {
+    background-color: #E0E0E0;
+    border: none;
+    border-radius: 10px;
+}
+
+QPushButton#logout_btn2:hover {
+    background-color: #aad4f2;
+    border-radius: 10px;
+}
+
+QPushButton#logout_btn2:focus {
+    outline: none;
+    border: none;
+    background-color: #aad4f2;
+    border-radius: 10px;
+}
+
+QPushButton#logout_btn2:checked {
+    background-color: #aad4f2;
+}
+
+/* Nút user_btn3 */
+#user_btn3 {
+    background-color: #E0E0E0;
+    border-radius: 100px;
+}
+
+/* Style dùng chung */
+QPushButton {
+    background-color: #E0E0E0;
+    border: none;
+    border-radius: 10px;
+}
+
+QPushButton:hover {
+    background-color: #D5D5D5;
+    border-radius: 10px;
+}
+
+QPushButton:focus {
+    outline: none;
+    border: none;
+    background-color: #D5D5D5;
+    border-radius: 10px;
+}
+
+QPushButton:checked {
+    background-color: #D5D5D5;
+}
+
+
+QPushButton#main_btn2 {
+   text-align: left;
+
+
+}
+
+QPushButton#room_btn2 {
+   text-align: left;
+
+
+}
+QPushButton#bill_btn2 {
+   text-align: left;
+
+
+}
+QPushButton#report_btn2 {
+   text-align: left;
+
+
+}
+QPushButton#customer_btn2 {
+   text-align: left;
+
+
+}
+QPushButton#staff_btn2 {
+   text-align: left;
+     spacing: 100px;
+
+
+}
