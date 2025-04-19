@@ -1,8 +1,8 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
-from pyodbc import connect
-from login import loginui
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
+
 
 from PyQt5 import QtWidgets
 
@@ -12,6 +12,7 @@ from PyQt5 import QtWidgets
 class mainui(QMainWindow):
     def __init__(self):
         super().__init__()
+
         uic.loadUi('Trangchu.ui', self)  # Load trực tiếp file .ui
 
         # Gọi các hàm xử lý hoặc style sau khi load UI
@@ -31,6 +32,47 @@ class mainui(QMainWindow):
         self.bill_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.bill))
         self.logout_btn2.clicked.connect(self.logout)
         self.logout_btn.clicked.connect(self.logout)
+        self.user_btn2.clicked.connect(self.open_edituserdialog)
+        self.user_btn1.clicked.connect(self.open_edituserdialog)
+        self.user_btn3.clicked.connect(self.open_edituserdialog)
+        self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
+        self.editcustomer_button.clicked.connect(self.open_editcustomer_dialog)
+
+        self.model = QStandardItemModel(2, 10)
+        self.model.setHorizontalHeaderLabels(["Mã Khách Hàng","Họ Tên", "Giới Tính", "Quốc Tịch","CCCD","SĐT","Địa Chỉ","Mã Phòng","Ngày Nhận",'Ngày Trả'])
+        self.model.setItem(0, 0, QStandardItem("Nguyễn Văn A"))
+        self.model.setItem(0, 1, QStandardItem("0123456789"))
+        self.model.setItem(0, 2, QStandardItem("Hà Nội"))
+        self.model.setItem(1, 0, QStandardItem("Trần Thị B"))
+        self.model.setItem(1, 1, QStandardItem("0987654321"))
+        self.model.setItem(1, 2, QStandardItem("TP.HCM"))
+
+        # Kết nối mô hình với QTableView
+        self.customer_table.setModel(self.model)
+        # Resize các cột để chia đều không gian
+        header = self.customer_table.horizontalHeader()
+
+        # Đặt tất cả các cột để có chế độ Stretch
+        for column in range(self.model.columnCount()):
+            header.setSectionResizeMode(column, QHeaderView.Stretch)
+
+    def open_addcustomer_dialog(self):
+        from addcustomer_dialog import addcustomer_dialog
+        dialog=addcustomer_dialog()
+        dialog.exec_()
+    def open_editcustomer_dialog(self):
+        from editcustomer_dialog import editcustomer_dialog
+        dialog=editcustomer_dialog()
+        dialog.exec_()
+    def open_edituserdialog(self):
+        from dialog_edituser import dialog_edituser
+        dlg = dialog_edituser()
+        dlg.exec_()  # Ho
+
+
+
+
+
 
     def logout(self):
         from login import loginui
@@ -56,83 +98,16 @@ class mainui(QMainWindow):
             self.login_ui.setupUi(self.login_window)
             self.login_window.show()
 
+
+
+
+
+
     def applyStylesheet(self):
 
         with open('style.qss', 'r') as f:
             self.setStyleSheet(f.read())
-
             self.change_btn.click()
-
-            self.widget_2.setStyleSheet("""
-            background-color: #E0E0E0;
-            """)
-            self.widget.setStyleSheet("""
-            background-color: #E0E0E0;
-            """)
-
-            self.change_btn.setStyleSheet("""
-                                  QPushButton {
-                                      background-color: white;
-                                      border: none;
-                                      text-align: left;
-                                      padding: 10px;
-                                       border-radius:10px;
-                                  }
-                                  QPushButton:hover {
-                                      background-color: #E0E0E0; /* xanh nhạt */
-                                  }
-                              """)
-            self.logout_btn.setStyleSheet("""
-                                      QPushButton {
-                                  background-color: #E0E0E0;
-                                  border: none;
-                                  padding:px;
-                                  border-radius:10px;
-                              }
-
-                              QPushButton:hover {
-                                  background-color: 		#aad4f2;
-                                      border-radius:10px;
-                              }
-
-                              QPushButton:focus {
-                                  outline: none;
-                                  border: none;
-                                  background-color: 	#aad4f2;
-                                      border-radius:10px;
-                              }
-                              QPushButton:checked {
-                              background-color: #aad4f2;
-                              }
-                                """)
-            self.logout_btn2.setStyleSheet("""
-                                              QPushButton {
-                                          background-color: #E0E0E0;
-                                          border: none;
-                                          padding:px;
-                                          border-radius:10px;
-                                      }
-
-                                      QPushButton:hover {
-                                          background-color: 		#aad4f2;
-                                              border-radius:10px;
-                                      }
-
-                                      QPushButton:focus {
-                                          outline: none;
-                                          border: none;
-                                          background-color: 	#aad4f2;
-                                              border-radius:10px;
-                                      }
-                                      QPushButton:checked {
-                                      background-color: #aad4f2;
-                                      }
-                                        """)
-
-            self.user_btn3.setStyleSheet(""" 
-
-                                """)
-
             style = """
                               QPushButton {
                                   background-color: #E0E0E0;

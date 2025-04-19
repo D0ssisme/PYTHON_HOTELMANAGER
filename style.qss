@@ -1,6 +1,7 @@
 /* Widgets */
 #widget_2, #widget {
     background-color: #E0E0E0;
+    border-radius: 20px;
 }
 
 /* Nút change_btn */
@@ -15,52 +16,33 @@ QPushButton#change_btn {
 QPushButton#change_btn:hover {
     background-color: #E0E0E0;
 }
-
-/* Nút logout_btn */
-QPushButton#logout_btn {
-    background-color: #E0E0E0;
-    border: none;
-    border-radius: 10px;
-}
-
-QPushButton#logout_btn:hover {
-    background-color: #aad4f2;
-    border-radius: 10px;
-}
-
-QPushButton#logout_btn:focus {
-    outline: none;
-    border: none;
-    background-color: #aad4f2;
-    border-radius: 10px;
-}
-
-QPushButton#logout_btn:checked {
-    background-color: #aad4f2;
-}
-
-/* Nút logout_btn2 */
+QPushButton#logout_btn,
 QPushButton#logout_btn2 {
     background-color: #E0E0E0;
     border: none;
+    padding: 5px;
     border-radius: 10px;
 }
 
+QPushButton#logout_btn:hover,
 QPushButton#logout_btn2:hover {
-    background-color: #aad4f2;
+    background-color: #D5D5D5;
     border-radius: 10px;
 }
 
+QPushButton#logout_btn:focus,
 QPushButton#logout_btn2:focus {
     outline: none;
     border: none;
-    background-color: #aad4f2;
+    background-color: #D5D5D5;
     border-radius: 10px;
 }
 
+QPushButton#logout_btn:checked,
 QPushButton#logout_btn2:checked {
-    background-color: #aad4f2;
+    background-color: #D5D5D5;
 }
+
 
 /* Nút user_btn3 */
 #user_btn3 {
@@ -123,4 +105,20 @@ QPushButton#staff_btn2 {
      spacing: 100px;
 
 
+}
+QPushButton#refresh_button {
+
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+
+     min-width: 100px;
+    min-height: 40px;
+    max-width: 100px;
+    max-height: 40px;
+
+}
+
+QTableView#customer_table {
+    border: none;
 }
