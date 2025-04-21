@@ -2,6 +2,8 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from database import DataBase
+import pyodbc
 
 
 from PyQt5 import QtWidgets
@@ -38,21 +40,28 @@ class mainui(QMainWindow):
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
         self.editcustomer_button.clicked.connect(self.open_editcustomer_dialog)
 
-        self.model = QStandardItemModel(2, 10)
-        self.model.setHorizontalHeaderLabels(["Mã Khách Hàng","Họ Tên", "Giới Tính", "Quốc Tịch","CCCD","SĐT","Địa Chỉ","Mã Phòng","Ngày Nhận",'Ngày Trả'])
-        self.model.setItem(0, 0, QStandardItem("Nguyễn Văn A"))
-        self.model.setItem(0, 1, QStandardItem("0123456789"))
-        self.model.setItem(0, 2, QStandardItem("Hà Nội"))
-        self.model.setItem(1, 0, QStandardItem("Trần Thị B"))
-        self.model.setItem(1, 1, QStandardItem("0987654321"))
-        self.model.setItem(1, 2, QStandardItem("TP.HCM"))
+        # 1. Kết nối và lấy dữ liệu
+        db = DataBase()
+        customers = db.get_customers()
 
-        # Kết nối mô hình với QTableView
+
+        # 2. Tạo model với số cột phù hợp
+        self.model = QStandardItemModel()
+        self.model.setHorizontalHeaderLabels([
+            "Mã Khách Hàng", "Họ Tên", "Giới Tính", "Quốc Tịch",
+            "CCCD", "SĐT", "Địa Chỉ", "Mã Phòng", "Ngày Nhận", "Ngày Trả"
+        ])
+
+        # 3. Đổ dữ liệu từ SQL vào model
+        for row in customers:
+            row_items = [QStandardItem(str(cell)) for cell in row]
+            self.model.appendRow(row_items)
+
+        # 4. Gắn model vào QTableView
         self.customer_table.setModel(self.model)
-        # Resize các cột để chia đều không gian
-        header = self.customer_table.horizontalHeader()
 
-        # Đặt tất cả các cột để có chế độ Stretch
+        # 5. Căn chỉnh cột cho đẹp
+        header = self.customer_table.horizontalHeader()
         for column in range(self.model.columnCount()):
             header.setSectionResizeMode(column, QHeaderView.Stretch)
 
@@ -68,9 +77,6 @@ class mainui(QMainWindow):
         from dialog_edituser import dialog_edituser
         dlg = dialog_edituser()
         dlg.exec_()  # Ho
-
-
-
 
 
 
