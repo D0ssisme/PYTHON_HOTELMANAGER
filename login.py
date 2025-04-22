@@ -110,7 +110,7 @@ class loginui(object):
 
 
     def handle_login(self, MainWindow):
-        from main import mainui
+        from g import mainui
         username = self.login_input.text()
         password = self.password_input.text()
 

@@ -180,10 +180,11 @@ class ThemKhachHangDialog(QDialog):
         if self.parent().db.add_customer(new_data):
             self.parent().load_data()
             QMessageBox.information(self, "Thành công", "Đã thêm khách hàng mới thành công!")
+
         else:
             QMessageBox.critical(self, "Lỗi", "Không thể thêm khách hàng vào database")
 
-        self.accept();
+
 
 
 

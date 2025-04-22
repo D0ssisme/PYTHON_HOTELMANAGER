@@ -15,10 +15,13 @@ class mainui(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        uic.loadUi('Trangchu.ui', self)  # Load trực tiếp file .ui
+        uic.loadUi('homepage.ui', self)  # Load trực tiếp file .ui
 
         # Gọi các hàm xử lý hoặc style sau khi load UI
         self.applyStylesheet()
+        self.db = DataBase()
+        self.db.connection = None
+        self.db.connect()
 
         self.main_btn.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.main))
         self.room_btn.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.room))
@@ -39,11 +42,23 @@ class mainui(QMainWindow):
         self.user_btn3.clicked.connect(self.open_edituserdialog)
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
         self.editcustomer_button.clicked.connect(self.open_editcustomer_dialog)
+        self.loaddata_tablecustomer()
+        self.customer_table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.customer_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectItems)
 
-        # 1. Kết nối và lấy dữ liệu
-        db = DataBase()
-        customers = db.get_customers()
 
+        self.selectoption_combobox.addItems(["tất cả", "mã khách hàng"])
+        self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
+
+
+
+
+
+
+
+    def loaddata_tablecustomer(self):
+
+        customers = self.db.get_customers()
 
         # 2. Tạo model với số cột phù hợp
         self.model = QStandardItemModel()
@@ -65,14 +80,61 @@ class mainui(QMainWindow):
         for column in range(self.model.columnCount()):
             header.setSectionResizeMode(column, QHeaderView.Stretch)
 
+    def open_deletecustomer(self):
+
+        selected_indexes = self.customer_table.selectionModel().selectedIndexes()
+        if selected_indexes:
+            selected_index = selected_indexes[0]
+            first_cell_index = self.customer_table.model().index(selected_index.row(), 0)
+            value = first_cell_index.data()
+        else:
+            QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn khách hàng muốn xóa !")
+            return
+
+
+        reply = QMessageBox.question(
+            self, "Xác nhận xóa",
+            f"Bạn có chắc chắn muốn xóa khách hàng  {value}?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if reply == QMessageBox.Yes:
+            if self.db.delete_customer(value):
+                self.loaddata_tablecustomer()
+                QMessageBox.information(self, "Thành công", "Đã xóa khách hàng thành công!")
+                self.loaddata_tablecustomer()
+
+            else:
+                QMessageBox.critical(self, "Lỗi", "Không thể xóa khách hàng")
+
+
+
+
     def open_addcustomer_dialog(self):
         from addcustomer_dialog import addcustomer_dialog
         dialog=addcustomer_dialog()
         dialog.exec_()
+
+
     def open_editcustomer_dialog(self):
         from editcustomer_dialog import editcustomer_dialog
-        dialog=editcustomer_dialog()
-        dialog.exec_()
+        selected_indexes = self.customer_table.selectionModel().selectedIndexes()
+        if selected_indexes:
+            selected_index = selected_indexes[0]
+            first_cell_index = self.customer_table.model().index(selected_index.row(), 0)
+            value = first_cell_index.data()
+            dialog = editcustomer_dialog(value)
+            dialog.exec_()
+        else:
+            QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn khách hàng muốn xóa !")
+            return
+
+
+
+
+
+
+
+
     def open_edituserdialog(self):
         from dialog_edituser import dialog_edituser
         dlg = dialog_edituser()

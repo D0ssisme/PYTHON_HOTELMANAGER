@@ -46,3 +46,49 @@ class DataBase:
     def close(self):
         if self.connection:
             self.connection.close()
+
+
+
+    def add_customer(self, customer_data):
+
+        cursor = self.connection.cursor()
+
+        try:
+            print(f"Dữ liệu thêm vào: {customer_data}")  # Debug xem dữ liệu truyền vào
+
+            query = """
+                INSERT KhachHang (
+                    makh, hovaten, gioitinh, quoctich, cccd, 
+                    sdt, diachi, maphong, ngaynhan, ngaytra
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            cursor.execute(query, customer_data)
+            self.connection.commit()
+            print("Thêm khách hàng thành công.")
+            return True
+
+
+        except Exception as e:
+            print(f"❌ Lỗi không xác định: {e}")
+
+        finally:
+            if cursor:
+                cursor.close()
+
+
+
+    def delete_customer(self, makh):
+        cursor = self.connection.cursor()
+        query = "DELETE FROM KhachHang WHERE makh = ?"
+        try:
+            cursor.execute(query, (makh,))
+            self.connection.commit()
+            return True
+        except pyodbc.Error as e:
+            print(f"Lỗi khi xóa khách hàng: {e}")
+            return False
+
+
+    def close(self):
+        if self.connection:
+            self.connection.close()

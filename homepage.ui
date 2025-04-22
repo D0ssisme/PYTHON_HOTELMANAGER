@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1327</width>
+    <width>1523</width>
     <height>848</height>
    </rect>
   </property>
@@ -716,7 +716,7 @@
        <item>
         <widget class="QStackedWidget" name="widget_page">
          <property name="currentIndex">
-          <number>6</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="main">
           <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -1218,7 +1218,7 @@
             <widget class="QWidget" name="widget_14" native="true">
              <property name="maximumSize">
               <size>
-               <width>1000</width>
+               <width>16777215</width>
                <height>100</height>
               </size>
              </property>
@@ -1227,13 +1227,13 @@
                <widget class="QWidget" name="widget_16" native="true">
                 <property name="minimumSize">
                  <size>
-                  <width>500</width>
+                  <width>0</width>
                   <height>100</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>500</width>
+                  <width>16777215</width>
                   <height>100</height>
                  </size>
                 </property>
@@ -1260,9 +1260,15 @@
                    </property>
                    <item>
                     <widget class="QWidget" name="widget_button_8" native="true">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
                      <property name="maximumSize">
                       <size>
-                       <width>300</width>
+                       <width>16777215</width>
                        <height>300</height>
                       </size>
                      </property>
@@ -1424,6 +1430,35 @@
                           <width>50</width>
                           <height>50</height>
                          </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="horizontalSpacer_3">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="selectoption_combobox"/>
+                      </item>
+                      <item>
+                       <widget class="QLineEdit" name="lineEdit">
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="placeholderText">
+                         <string>nhập mã khách hàng muốn tìm</string>
                         </property>
                        </widget>
                       </item>
