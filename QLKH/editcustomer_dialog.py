@@ -3,11 +3,13 @@ import sys
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtCore import QDateTime
 import pycountry
-from QLKH.database import DataBase
+import os
+from database import DataBase
 class editcustomer_dialog(QtWidgets.QDialog):
     def __init__(self,makh,hoten,gioitinh,quoctich,cccd,sdt,diachi,maphong,ngaynhan,ngaytra):
         super().__init__()
-        uic.loadUi("editcustomer_dialog.ui", self)  # Load file .ui
+        ui_path = os.path.join(os.path.dirname(__file__), "editcustomer_dialog.ui")
+        uic.loadUi(ui_path, self)
         self.setWindowTitle("THÊM KHÁCH HÀNG")
         self.makh_value.setText(makh)  # Đặt giá trị mới cho QLineEdits
         self.makh_value.setReadOnly(True)
@@ -52,17 +54,19 @@ class editcustomer_dialog(QtWidgets.QDialog):
         ngaynhan = self.ngaynhan_value.dateTime().toString("yyyy-MM-dd HH:mm:ss")
         ngaytra = self.ngaytra_value.dateTime().toString("yyyy-MM-dd HH:mm:ss")
 
-        customer_data = (makh, hovaten, gioitinh, quoctich, cccd, sdt, diachi, maphong, ngaynhan, ngaytra)
+        customer_data = (hovaten, gioitinh, quoctich, cccd, sdt, diachi, maphong, ngaynhan, ngaytra,makh)
         if not hovaten or not cccd or not sdt:
             QMessageBox.warning(self, "Cảnh báo", "Vui lòng nhập đầy đủ Họ tên, CCCD và Số điện thoại!")
             return
 
-
-        if self.db.update_customer(customer_data):
-            QMessageBox.information(self, "Thành công", "Đã cập nhật thông tin khách hàng!")
-            self.accept();
-        else:
-            QMessageBox.critical(self, "Lỗi", "Không thể cập nhật thông tin khách hàng")
+        try:
+            if self.db.update_customer(customer_data):
+                QMessageBox.information(self, "Thành công", "Đã cập nhật thông tin khách hàng!")
+                self.accept()
+            else:
+                QMessageBox.critical(self, "Lỗi", "Không thể cập nhật thông tin khách hàng")
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":

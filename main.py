@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from QLKH.database import DataBase
+from database import DataBase
 
 from PyQt5 import QtWidgets
 
@@ -43,14 +43,20 @@ class mainui(QMainWindow):
         self.loaddata_tablecustomer()
         self.customer_table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.customer_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectItems)
+        self.refresh_button.clicked.connect(self.search_tablecustomer)
 
 
-        self.selectoption_combobox.addItems(["tất cả", "mã khách hàng"])
+        self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
 
 
 
 
+
+    def search_tablecustomer(self):
+
+        if  self.selectoption_combobox.currentText()=="Tất Cả":
+            self.loaddata_tablecustomer()
 
 
 
@@ -105,13 +111,16 @@ class mainui(QMainWindow):
                 QMessageBox.critical(self, "Lỗi", "Không thể xóa khách hàng")
 
 
-
-
     def open_addcustomer_dialog(self):
-        from QLKH.addcustomer_dialog import addcustomer_dialog
-        dialog=addcustomer_dialog()
-        dialog.exec_()
-        self.loaddata_tablecustomer()
+        try:
+            from QLKH.addcustomer_dialog import addcustomer_dialog
+            dialog = addcustomer_dialog()
+            dialog.exec_()
+            self.loaddata_tablecustomer()
+        except Exception as e:
+            print("Lỗi khi mở dialog thêm khách hàng:", e)
+
+
 
 
     def open_editcustomer_dialog(self):

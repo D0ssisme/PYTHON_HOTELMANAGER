@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, uic
 import sys
 
+
 class dialog_edituser(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()

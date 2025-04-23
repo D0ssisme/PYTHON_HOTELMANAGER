@@ -4,10 +4,12 @@ import pycountry
 from PyQt5.QtCore import QDateTime, Qt
 from PyQt5.QtWidgets import  QMessageBox
 from database import DataBase
+import os
 class addcustomer_dialog(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi("addcustomer_dialog.ui", self)  # Load file .ui
+        ui_path = os.path.join(os.path.dirname(__file__), "addcustomer_dialog.ui")
+        uic.loadUi(ui_path, self)
         self.setWindowTitle("THÊM KHÁCH HÀNG")
         self.gender_combobox.addItems(["Nam", "Nữ"])
         self.country_combobox.setEditable(True)

@@ -97,9 +97,8 @@ class DataBase:
             WHERE makh=?
         """
         try:
-            params = customer_data[1:] + [customer_data[0]]
-            print("Thực thi câu lệnh UPDATE với:", params)
-            cursor.execute(query, params)
+
+            cursor.execute(query, customer_data)
             self.connection.commit()
 
             if cursor.rowcount == 0:
