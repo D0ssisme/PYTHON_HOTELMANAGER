@@ -88,6 +88,28 @@ class DataBase:
             print(f"Lỗi khi xóa khách hàng: {e}")
             return False
 
+    def update_customer(self, customer_data):
+        cursor = self.connection.cursor()
+        query = """
+            UPDATE KhachHang 
+            SET hovaten=?, gioitinh=?, quoctich=?, cccd=?, sdt=?, 
+                diachi=?, maphong=?, ngaynhan=?, ngaytra=?
+            WHERE makh=?
+        """
+        try:
+            params = customer_data[1:] + [customer_data[0]]
+            print("Thực thi câu lệnh UPDATE với:", params)
+            cursor.execute(query, params)
+            self.connection.commit()
+
+            if cursor.rowcount == 0:
+                print("Không có dòng nào được cập nhật. Có thể mã khách hàng không tồn tại.")
+                return False
+
+            return True
+        except pyodbc.Error as e:
+            print(f"Lỗi khi cập nhật khách hàng: {e}")
+            return False
 
     def close(self):
         if self.connection:

@@ -23,7 +23,7 @@ class addcustomer_dialog(QtWidgets.QDialog):
         self.ngaytra_datatime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
         self.ngaytra_datatime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
         self.ngaytra_datatime.setCalendarPopup(True)
-        self.add_agreebutton.clicked.connect(self.add_customer_form)
+        self.add_agreebutton.clicked.connect(self.check_addcustomer)
         self.cancel_button.clicked.connect(self.closedialog)
 
         self.db = DataBase()
@@ -32,7 +32,7 @@ class addcustomer_dialog(QtWidgets.QDialog):
     def closedialog(self):
         self.close()
 
-    def add_customer_form(self):
+    def check_addcustomer(self):
 
             makh = self.makh_input.text()
             hovaten = self.name_input.text()

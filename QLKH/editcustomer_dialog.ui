@@ -240,7 +240,7 @@
           <widget class="QComboBox" name="gioitinh_value"/>
          </item>
          <item>
-          <widget class="QComboBox" name="quoctich_value"/>
+          <widget class="QComboBox" name="country_value"/>
          </item>
          <item>
           <widget class="QLineEdit" name="cccd_value"/>
@@ -267,7 +267,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="agree_button" native="true">
+    <widget class="QWidget" name="button_layout" native="true">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -304,7 +304,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="cance_button">
+       <widget class="QPushButton" name="cancel_button">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -330,7 +330,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="agree_button">
         <property name="minimumSize">
          <size>
           <width>100</width>

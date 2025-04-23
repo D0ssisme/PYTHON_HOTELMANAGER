@@ -2,9 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from database import DataBase
-import pyodbc
-
+from QLKH.database import DataBase
 
 from PyQt5 import QtWidgets
 
@@ -101,7 +99,7 @@ class mainui(QMainWindow):
             if self.db.delete_customer(value):
                 self.loaddata_tablecustomer()
                 QMessageBox.information(self, "Thành công", "Đã xóa khách hàng thành công!")
-                self.loaddata_tablecustomer()
+
 
             else:
                 QMessageBox.critical(self, "Lỗi", "Không thể xóa khách hàng")
@@ -110,20 +108,44 @@ class mainui(QMainWindow):
 
 
     def open_addcustomer_dialog(self):
-        from addcustomer_dialog import addcustomer_dialog
+        from QLKH.addcustomer_dialog import addcustomer_dialog
         dialog=addcustomer_dialog()
         dialog.exec_()
+        self.loaddata_tablecustomer()
 
 
     def open_editcustomer_dialog(self):
-        from editcustomer_dialog import editcustomer_dialog
+        from QLKH.editcustomer_dialog import editcustomer_dialog
         selected_indexes = self.customer_table.selectionModel().selectedIndexes()
         if selected_indexes:
             selected_index = selected_indexes[0]
-            first_cell_index = self.customer_table.model().index(selected_index.row(), 0)
-            value = first_cell_index.data()
-            dialog = editcustomer_dialog(value)
+            makh = self.customer_table.model().index(selected_index.row(), 0)
+            hoten = self.customer_table.model().index(selected_index.row(), 1)
+            gioitinh = self.customer_table.model().index(selected_index.row(), 2)
+            quoctich = self.customer_table.model().index(selected_index.row(), 3)
+            cccd = self.customer_table.model().index(selected_index.row(), 4)
+            sdt = self.customer_table.model().index(selected_index.row(), 5)
+            diachi = self.customer_table.model().index(selected_index.row(), 6)
+            maphong = self.customer_table.model().index(selected_index.row(), 7)
+            ngaynhan = self.customer_table.model().index(selected_index.row(), 8)
+            ngaytra = self.customer_table.model().index(selected_index.row(), 9)
+
+
+
+            value = makh.data()
+            value1=hoten.data()
+            value2=gioitinh.data()
+            value3=quoctich.data()
+            value4=cccd.data()
+            value5=sdt.data()
+            value6=diachi.data()
+            value7=maphong.data()
+            value8=ngaynhan.data()
+            value9=ngaytra.data()
+
+            dialog = editcustomer_dialog(value,value1,value2,value3,value4,value5,value6,value7,value8,value9)
             dialog.exec_()
+            self.loaddata_tablecustomer()
         else:
             QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn khách hàng muốn xóa !")
             return
@@ -136,7 +158,7 @@ class mainui(QMainWindow):
 
 
     def open_edituserdialog(self):
-        from dialog_edituser import dialog_edituser
+        from QLKH.dialog_edituser import dialog_edituser
         dlg = dialog_edituser()
         dlg.exec_()  # Ho
 
@@ -173,7 +195,7 @@ class mainui(QMainWindow):
 
     def applyStylesheet(self):
 
-        with open('style.qss', 'r') as f:
+        with open('QLKH/style.qss', 'r') as f:
             self.setStyleSheet(f.read())
             self.change_btn.click()
             style = """

@@ -1,7 +1,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import  QMessageBox
-from QLKH import QLKHMain
 
 import pyodbc
 
@@ -110,7 +109,7 @@ class loginui(object):
 
 
     def handle_login(self, MainWindow):
-        from g import mainui
+        from main import mainui
         username = self.login_input.text()
         password = self.password_input.text()
 
