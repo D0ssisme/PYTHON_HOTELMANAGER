@@ -48,8 +48,7 @@ class mainui(QMainWindow):
         self.checkcustomer_button.clicked.connect(self.open_detailcustomerdialog)
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
-
-
+        self.customer_table.verticalHeader().setVisible(False)
 
     def open_detailcustomerdialog(self):
         from QLKH.detailcustomer_dialog import detailcustomer_dialog
