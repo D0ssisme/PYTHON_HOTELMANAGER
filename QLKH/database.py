@@ -49,9 +49,23 @@ class DataBase:
 
 
 
+
+    def find_customer(self,makh):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM khachhang WHERE makh LIKE '{makh}%'")
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy dữ liệu khách hàng:", e)
+            return []
+
+
+
     def add_customer(self, customer_data):
 
         cursor = self.connection.cursor()
+
+
 
         try:
             print(f"Dữ liệu thêm vào: {customer_data}")  # Debug xem dữ liệu truyền vào

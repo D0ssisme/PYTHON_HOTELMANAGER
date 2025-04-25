@@ -1,9 +1,9 @@
 from PyQt5 import QtWidgets, uic
 import sys
 import pycountry
-from PyQt5.QtCore import QDateTime, Qt
+from PyQt5.QtCore import QDateTime
 from PyQt5.QtWidgets import  QMessageBox
-from database import DataBase
+from QLKH.database import DataBase
 import os
 class addcustomer_dialog(QtWidgets.QDialog):
     def __init__(self):

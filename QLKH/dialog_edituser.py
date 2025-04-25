@@ -1,11 +1,12 @@
 from PyQt5 import QtWidgets, uic
 import sys
-
+import os
 
 class dialog_edituser(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
-        uic.loadUi("dialog_edituser.ui", self)  # Load file .ui
+        ui_path = os.path.join(os.path.dirname(__file__), "dialog_edituser.ui")
+        uic.loadUi(ui_path, self)
         self.setWindowTitle("Thông tin người dùng")
         self.taikhoan_radiobutton.toggled.connect(self.switch_page)
         self.matkhau_radiobutton.toggled.connect(self.switch_page)

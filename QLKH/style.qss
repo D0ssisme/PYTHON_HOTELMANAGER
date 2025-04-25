@@ -113,9 +113,9 @@ QPushButton#refresh_button {
     padding: 0px;
 
      min-width: 100px;
-    min-height: 40px;
+    min-height: 35x;
     max-width: 100px;
-    max-height: 40px;
+    max-height: 35px;
 
 }
 

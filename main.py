@@ -2,7 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from database import DataBase
+from QLKH.database import DataBase
 
 from PyQt5 import QtWidgets
 
@@ -45,11 +45,41 @@ class mainui(QMainWindow):
         self.customer_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectItems)
         self.refresh_button.clicked.connect(self.search_tablecustomer)
 
-
+        self.checkcustomer_button.clicked.connect(self.open_detailcustomerdialog)
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
 
 
+
+    def open_detailcustomerdialog(self):
+        from QLKH.detailcustomer_dialog import detailcustomer_dialog
+        selected_indexes = self.customer_table.selectionModel().selectedIndexes()
+        if selected_indexes:
+            selected_index = selected_indexes[0]
+            makh = self.customer_table.model().index(selected_index.row(), 0)
+            hoten = self.customer_table.model().index(selected_index.row(), 1)
+            gioitinh = self.customer_table.model().index(selected_index.row(), 2)
+            quoctich = self.customer_table.model().index(selected_index.row(), 3)
+            cccd = self.customer_table.model().index(selected_index.row(), 4)
+            sdt = self.customer_table.model().index(selected_index.row(), 5)
+            diachi = self.customer_table.model().index(selected_index.row(), 6)
+            maphong = self.customer_table.model().index(selected_index.row(), 7)
+            ngaynhan = self.customer_table.model().index(selected_index.row(), 8)
+            ngaytra = self.customer_table.model().index(selected_index.row(), 9)
+
+            value = makh.data()
+            value1 = hoten.data()
+            value2 = gioitinh.data()
+            value3 = quoctich.data()
+            value4 = cccd.data()
+            value5 = sdt.data()
+            value6 = diachi.data()
+            value7 = maphong.data()
+            value8 = ngaynhan.data()
+            value9 = ngaytra.data()
+
+            dialog = detailcustomer_dialog(value, value1, value2, value3, value4, value5, value6, value7, value8, value9)
+            dialog.exec_()
 
 
 
@@ -57,8 +87,20 @@ class mainui(QMainWindow):
 
         if  self.selectoption_combobox.currentText()=="Tất Cả":
             self.loaddata_tablecustomer()
+        else :
+            self.close_table()
+            makh=self.loc_input.text()
+            customers = self.db.find_customer(makh)
+            for row in customers:
+                row_items = [QStandardItem(str(cell)) for cell in row]
+                self.model.appendRow(row_items)
+            if(makh==""):
+                self.close_table()
 
 
+
+    def close_table(self):
+        self.model.removeRows(0, self.model.rowCount())
 
     def loaddata_tablecustomer(self):
 
