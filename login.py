@@ -109,7 +109,7 @@ class loginui(object):
 
 
     def handle_login(self, MainWindow):
-        from main import mainui
+        from homepage import mainui
         username = self.login_input.text()
         password = self.password_input.text()
 
@@ -140,7 +140,7 @@ class loginui(object):
 
 class MainUIApp(QtWidgets.QMainWindow):
     def __init__(self):
-        from main import mainui
+        from homepage import mainui
         super().__init__()
         self.ui = mainui()
         self.ui.setupUi(self)
