@@ -3,9 +3,10 @@ from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from QLKH.database import DataBase
+from QLNV.database_staff import DataBaseStaff
 
 from PyQt5 import QtWidgets
-
+from PyQt5.QtWidgets import QAbstractItemView
 
 
 
@@ -18,6 +19,7 @@ class mainui(QMainWindow):
         # Gọi các hàm xử lý hoặc style sau khi load UI
         self.applyStylesheet()
         self.db = DataBase()
+        self.db_staff = DataBaseStaff()
         self.db.connection = None
         self.db.connect()
 
@@ -41,6 +43,7 @@ class mainui(QMainWindow):
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
         self.editcustomer_button.clicked.connect(self.open_editcustomer_dialog)
         self.loaddata_tablecustomer()
+
         self.customer_table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.customer_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectItems)
         self.refresh_button.clicked.connect(self.search_tablecustomer)
@@ -49,6 +52,14 @@ class mainui(QMainWindow):
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
         self.customer_table.verticalHeader().setVisible(False)
+
+        ######################################
+        # Nhân viên
+        self.load_staff_data()
+        self.addstaff_button.clicked.connect(self.open_addstaff_dialog)
+        self.editstaff_button.clicked.connect(self.open_editstaff_dialog)
+        self.deletestaff_button.clicked.connect(self.open_deletestaff)
+
 
     def open_detailcustomerdialog(self):
         from QLKH.detailcustomer_dialog import detailcustomer_dialog
@@ -290,6 +301,90 @@ class mainui(QMainWindow):
                 btn1.setStyleSheet(style)
                 btn2.setStyleSheet(style)
 
+
+ #########################################################################################
+                                    #NHÂN VIÊN
+
+
+    def load_staff_data(self):
+        # 1. Kết nối và lấy dữ liệu
+        staffs = self.db_staff.get_staff()
+
+        # 2. Tạo model với số cột phù hợp
+        self.staff_model = QStandardItemModel()
+        self.staff_model.setHorizontalHeaderLabels([
+            "Mã NV", "Họ Tên", "Chức Vụ", "SĐT", "Ca Làm"
+        ])
+
+        # 3. Đổ dữ liệu từ SQL vào model
+        for row in staffs:
+            row_items = [QStandardItem(str(cell)) for cell in row]
+            self.staff_model.appendRow(row_items)
+
+        # 4. Gắn model vào QTableView
+        self.staff_table.setModel(self.staff_model)
+        self.staff_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.staff_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.staff_table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.staff_table.verticalHeader().setVisible(False)
+
+        # 5. Căn chỉnh cột cho đẹp
+        header = self.staff_table.horizontalHeader()
+        for column in range(self.staff_model.columnCount()):
+            header.setSectionResizeMode(column, QHeaderView.Stretch)
+
+    def open_addstaff_dialog(self):
+        try:
+            from QLNV.addstaff_dialog import addstaff_dialog  # Điều chỉnh theo đúng thư mục bạn lưu file .py
+            dialog = addstaff_dialog()
+            dialog.exec_()
+            self.load_staff_data()  # Hàm này bạn cần có để load lại bảng nhân viên
+        except Exception as e:
+            print("Lỗi khi mở dialog thêm nhân viên:", e)
+
+    def open_editstaff_dialog(self):
+        from QLNV.editstaff_dialog import editstaff_dialog
+
+        selected_rows = self.staff_table.selectionModel().selectedRows()
+        if selected_rows:
+            row = selected_rows[0].row()
+            model = self.staff_table.model()
+
+            manv = model.index(row, 0).data()
+            hoten = model.index(row, 1).data()
+            chucvu = model.index(row, 2).data()
+            sdt = model.index(row, 3).data()
+            calam = model.index(row, 4).data()
+
+            print(f"manv: {manv}, hoten: {hoten}, chucvu: {chucvu}, sdt: {sdt}, calam: {calam}")
+
+            dialog = editstaff_dialog(manv, hoten, chucvu, calam, sdt)
+            dialog.exec_()
+            self.load_staff_data()
+        else:
+            QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn nhân viên muốn chỉnh sửa!")
+
+    def open_deletestaff(self):
+        selected_indexes = self.staff_table.selectionModel().selectedIndexes()
+        if selected_indexes:
+            selected_index = selected_indexes[0]
+            first_cell_index = self.staff_table.model().index(selected_index.row(), 0)
+            manv = first_cell_index.data()
+        else:
+            QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn nhân viên muốn xóa!")
+            return
+
+        reply = QMessageBox.question(
+            self, "Xác nhận xóa",
+            f"Bạn có chắc chắn muốn xóa nhân viên {manv}?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+        if reply == QMessageBox.Yes:
+            if self.db_staff.delete_staff(manv):
+                self.load_staff_data()
+                QMessageBox.information(self, "Thành công", "Đã xóa nhân viên thành công!")
+            else:
+                QMessageBox.critical(self, "Lỗi", "Không thể xóa nhân viên.")
 
 if __name__ == '__main__':
     app = QApplication([])
