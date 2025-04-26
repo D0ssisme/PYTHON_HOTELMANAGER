@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets
 
 
 class mainui(QMainWindow):
-    def __init__(self):
+    def __init__(self,username):
         super().__init__()
 
         uic.loadUi('homepage.ui', self)  # Load trực tiếp file .ui
@@ -44,7 +44,7 @@ class mainui(QMainWindow):
         self.customer_table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.customer_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectItems)
         self.refresh_button.clicked.connect(self.search_tablecustomer)
-
+        self.username_input.setText(username)
         self.checkcustomer_button.clicked.connect(self.open_detailcustomerdialog)
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
@@ -293,6 +293,7 @@ class mainui(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    window = mainui()
+    user="aaaa"
+    window = mainui(user)
     window.show()
     app.exec_()

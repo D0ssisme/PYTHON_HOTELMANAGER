@@ -10,6 +10,7 @@ class dialog_edituser(QtWidgets.QDialog):
         self.setWindowTitle("Thông tin người dùng")
         self.taikhoan_radiobutton.toggled.connect(self.switch_page)
         self.matkhau_radiobutton.toggled.connect(self.switch_page)
+        self.taikhoan_radiobutton.setChecked(True)
 
     def switch_page(self):
             if self.taikhoan_radiobutton.isChecked():

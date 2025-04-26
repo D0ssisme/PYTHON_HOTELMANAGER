@@ -335,7 +335,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="username_input">
            <property name="minimumSize">
             <size>
              <width>60</width>

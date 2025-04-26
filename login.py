@@ -1,7 +1,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import  QMessageBox
-
+from homepage import mainui
 import pyodbc
 
 class DataBase:
@@ -107,9 +107,8 @@ class loginui(object):
 
 
 
-
     def handle_login(self, MainWindow):
-        from homepage import mainui
+
         username = self.login_input.text()
         password = self.password_input.text()
 
@@ -122,7 +121,7 @@ class loginui(object):
         if db.checklogin(username, password):
             QMessageBox.information(MainWindow, "Thành công", "Đăng nhập thành công!")
             MainWindow.hide()
-            self.main_ui = mainui()  # Tạo cửa sổ giao diện chính
+            self.main_ui = mainui(username)  # Tạo cửa sổ giao diện chính
             self.main_ui.show()
 
         else:

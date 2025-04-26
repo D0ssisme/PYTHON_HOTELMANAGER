@@ -50,6 +50,7 @@ class DataBase:
 
 
 
+
     def find_customer(self,makh):
         try:
             cursor = self.connection.cursor()
