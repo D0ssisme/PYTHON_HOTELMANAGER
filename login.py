@@ -14,7 +14,7 @@ class DataBase:
     def connect(self):
         try:
             server = r"DESKTOP-3FTCGLC\SQLSERVER2022"
-            database = "hotel"
+            database = "HotelManagement"
             username = "manhdung"
             password = "29052005"
 
@@ -35,7 +35,7 @@ class DataBase:
 
             cursor = self.connection.cursor()
             cursor.execute(
-                "SELECT [mat khau] FROM login WHERE [tai khoan] = ?",
+                "SELECT [matkhau] FROM login WHERE [taikhoan] = ?",
                 (username,)
             )
             result = cursor.fetchone()
@@ -119,9 +119,13 @@ class loginui(object):
         # Thêm đoạn kiểm tra đăng nhập nếu muốn
         db = DataBase()
         if db.checklogin(username, password):
+            db.connection.close()
+            db.connection = None
+            print("Đã ngắt kết nối SQL Server.")
             QMessageBox.information(MainWindow, "Thành công", "Đăng nhập thành công!")
+
             MainWindow.hide()
-            self.main_ui = mainui(username)  # Tạo cửa sổ giao diện chính
+            self.main_ui = mainui(username,password)  # Tạo cửa sổ giao diện chính
             self.main_ui.show()
 
         else:

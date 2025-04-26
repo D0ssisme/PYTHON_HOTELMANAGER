@@ -1,4 +1,8 @@
+from multiprocessing.spawn import old_main_modules
+
 import pyodbc
+from PyQt5.QtGui import QCursor
+
 
 class DataBase:
     def __init__(self):
@@ -7,10 +11,10 @@ class DataBase:
 
     def connect(self):
         try:
-            server = r"localhost\SQLEXPRESS"
+            server = r"DESKTOP-3FTCGLC\SQLSERVER2022"
             database = "HotelManagement"
-            username = "sa"
-            password = "Xoqlun@2104"
+            username = "manhdung"
+            password = "29052005"
 
             self.connection = pyodbc.connect(
                 f"DRIVER={{ODBC Driver 17 for SQL Server}};"
@@ -36,7 +40,7 @@ class DataBase:
     def check_login(self, username, password):
         try:
             cursor = self.connection.cursor()
-            cursor.execute("SELECT [mat khau] FROM login WHERE [tai khoan] = ?", (username,))
+            cursor.execute("SELECT [matkhau] FROM login WHERE [taikhoan] = ?", (username,))
             result = cursor.fetchone()
             return result and result[0] == password
         except Exception as e:
@@ -73,7 +77,7 @@ class DataBase:
 
             query = """
                 INSERT KhachHang (
-                    makh, hovaten, gioitinh, quoctich, cccd, 
+                    makh, hoten, gioitinh, quoctich, cccd, 
                     sdt, diachi, maphong, ngaynhan, ngaytra
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
@@ -107,7 +111,7 @@ class DataBase:
         cursor = self.connection.cursor()
         query = """
             UPDATE KhachHang 
-            SET hovaten=?, gioitinh=?, quoctich=?, cccd=?, sdt=?, 
+            SET hoten=?, gioitinh=?, quoctich=?, cccd=?, sdt=?, 
                 diachi=?, maphong=?, ngaynhan=?, ngaytra=?
             WHERE makh=?
         """
@@ -125,6 +129,43 @@ class DataBase:
             print(f"Lỗi khi cập nhật khách hàng: {e}")
             return False
 
+
+    def update_taikhoanuser(self,oldtaikhoan,newtaikhoan):
+        cursor = self.connection.cursor()
+        query="""
+        UPDATE login
+        set taikhoan=?
+        WHERE taikhoan=?
+        """
+        try :
+            cursor.execute(query, (newtaikhoan, oldtaikhoan))
+            self.connection.commit()
+            return True
+
+        except Exception as e:
+            print("Lỗi khi cập nhật tài khoản:", e)
+            return False
+
+    def update_matkhauuser(self,taikhoan,matkhaunew):
+        cursor=self.connection.cursor()
+        query="""
+        UPDATE login
+        SET matkhau=?
+        WHERE taikhoan=?
+        """
+        try:
+            cursor.execute(query,(matkhaunew,taikhoan))
+            self.connection.commit()
+            return True
+
+
+        except Exception as e:
+            print("lỗi khi cập nhật mật khẩu :",e)
+            return False
+
     def close(self):
         if self.connection:
             self.connection.close()
+            self.connection = None
+            print("Đã ngắt kết nối SQL Server.")
+

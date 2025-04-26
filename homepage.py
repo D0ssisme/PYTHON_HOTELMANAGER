@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QAbstractItemView
 
 
 class mainui(QMainWindow):
-    def __init__(self,username):
+    def __init__(self,username,password):
         super().__init__()
 
         uic.loadUi('homepage.ui', self)  # Load trực tiếp file .ui
@@ -37,9 +37,13 @@ class mainui(QMainWindow):
         self.bill_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.bill))
         self.logout_btn2.clicked.connect(self.logout)
         self.logout_btn.clicked.connect(self.logout)
-        self.user_btn2.clicked.connect(self.open_edituserdialog)
-        self.user_btn1.clicked.connect(self.open_edituserdialog)
-        self.user_btn3.clicked.connect(self.open_edituserdialog)
+        self.username=username
+        self.password=password
+
+        self.user_btn2.clicked.connect(lambda: self.open_edituserdialog(self.username, self.password))
+        self.user_btn1.clicked.connect(lambda: self.open_edituserdialog(self.username,self.password))
+        self.user_btn3.clicked.connect(lambda: self.open_edituserdialog(self.username,self.password))
+
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
         self.editcustomer_button.clicked.connect(self.open_editcustomer_dialog)
         self.loaddata_tablecustomer()
@@ -52,6 +56,7 @@ class mainui(QMainWindow):
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.deletecustomer_button.clicked.connect(self.open_deletecustomer)
         self.customer_table.verticalHeader().setVisible(False)
+        self.customer_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
 
         ######################################
         # Nhân viên
@@ -59,6 +64,7 @@ class mainui(QMainWindow):
         self.addstaff_button.clicked.connect(self.open_addstaff_dialog)
         self.editstaff_button.clicked.connect(self.open_editstaff_dialog)
         self.deletestaff_button.clicked.connect(self.open_deletestaff)
+
 
 
     def open_detailcustomerdialog(self):
@@ -211,17 +217,18 @@ class mainui(QMainWindow):
             QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn khách hàng muốn sửa !")
             return
 
+    def open_edituserdialog(self, username, password):
+        try:
+
+            from QLKH.dialog_edituser import dialog_edituser
+            dlg = dialog_edituser(username, password)
+            dlg.update_completed.connect(self.logout_fast)
 
 
+            dlg.exec_()  # Mở dialog sửa user
+        except Exception as e:
+            print("Lỗi khi mở dialog sửa user:", e)
 
-
-
-
-
-    def open_edituserdialog(self):
-        from QLKH.dialog_edituser import dialog_edituser
-        dlg = dialog_edituser()
-        dlg.exec_()  # Ho
 
 
 
@@ -243,12 +250,18 @@ class mainui(QMainWindow):
 
             # Ẩn cửa sổ chính và có thể hiện lại Login ở đây
             self.hide()
-
             self.login_window = QtWidgets.QMainWindow()
             self.login_ui = loginui()
             self.login_ui.setupUi(self.login_window)
             self.login_window.show()
 
+    def logout_fast(self):
+        from login import loginui
+        self.hide()
+        self.login_window = QtWidgets.QMainWindow()
+        self.login_ui = loginui()
+        self.login_ui.setupUi(self.login_window)
+        self.login_window.show()
 
 
 
@@ -388,7 +401,8 @@ class mainui(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication([])
-    user="aaaa"
-    window = mainui(user)
+    user="123"
+    password="29052005"
+    window = mainui(user,password)
     window.show()
     app.exec_()

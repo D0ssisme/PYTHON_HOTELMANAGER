@@ -728,7 +728,7 @@
        <item>
         <widget class="QStackedWidget" name="widget_page">
          <property name="currentIndex">
-          <number>4</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="main">
           <layout class="QHBoxLayout" name="horizontalLayout_8">

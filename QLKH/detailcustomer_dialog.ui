@@ -311,6 +311,17 @@
           <height>30</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color:#db5860;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+QPushButton:hover {
+    background-color: darkred;
+}</string>
+        </property>
         <property name="text">
          <string>Thoát</string>
         </property>

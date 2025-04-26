@@ -73,7 +73,8 @@ def get_embedding(model, img_path):
     return embedding
 
 # Đọc ảnh và lấy embedding
-img_path = r'/faces/CR7_KH003/IMG1.jpg'  # Đảm bảo đường dẫn đầy đủ
+img_path = "faces/CR7_KH003/IMG1.jpg"  # Bỏ dấu '/' đầu
+ # Đảm bảo đường dẫn đầy đủ
 
 embedding = get_embedding(model, img_path)
 

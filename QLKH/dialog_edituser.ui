@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>303</height>
+    <height>353</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -198,7 +198,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="taikhoan_page">
          <property name="minimumSize">
@@ -313,7 +313,30 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="matkhaumoi_input">
+           <widget class="QLineEdit" name="matkhaumoi1_input">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>30</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="maximumSize">
+             <size>
+              <width>70</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Mật Khẩu Mới</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="matkhaumoi2_input">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -367,7 +390,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="cancel_button">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -379,6 +402,17 @@
           <width>16777215</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color:#db5860;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+QPushButton:hover {
+    background-color: darkred;
+}</string>
         </property>
         <property name="text">
          <string>HỦY</string>
@@ -399,7 +433,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_2">
+       <widget class="QPushButton" name="agree_button">
         <property name="minimumSize">
          <size>
           <width>100</width>
@@ -411,6 +445,17 @@
           <width>16777215</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color:#379fd6;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+QPushButton:hover {
+    background-color: darkred;
+}</string>
         </property>
         <property name="text">
          <string>LƯU</string>

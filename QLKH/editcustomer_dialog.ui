@@ -311,6 +311,17 @@
           <height>30</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color:#db5860;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+QPushButton:hover {
+    background-color: darkred;
+}</string>
+        </property>
         <property name="text">
          <string>Hủy</string>
         </property>
@@ -336,6 +347,17 @@
           <width>100</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background-color:#379fd6;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+QPushButton:hover {
+    background-color: darkred;
+}</string>
         </property>
         <property name="text">
          <string>Lưu</string>
