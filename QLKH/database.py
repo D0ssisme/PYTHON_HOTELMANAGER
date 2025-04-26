@@ -7,10 +7,10 @@ class DataBase:
 
     def connect(self):
         try:
-            server = r"DESKTOP-3FTCGLC\SQLSERVER2022"
-            database = "hotel"
-            username = "manhdung"
-            password = "29052005"
+            server = r"localhost\SQLEXPRESS"
+            database = "HotelManagement"
+            username = "sa"
+            password = "Xoqlun@2104"
 
             self.connection = pyodbc.connect(
                 f"DRIVER={{ODBC Driver 17 for SQL Server}};"

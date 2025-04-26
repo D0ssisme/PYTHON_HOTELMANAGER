@@ -728,7 +728,7 @@
        <item>
         <widget class="QStackedWidget" name="widget_page">
          <property name="currentIndex">
-          <number>3</number>
+          <number>4</number>
          </property>
          <widget class="QWidget" name="main">
           <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -1787,7 +1787,7 @@
                        <number>0</number>
                       </property>
                       <item>
-                       <widget class="QPushButton" name="add_button_3">
+                       <widget class="QPushButton" name="addstaff_button">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1816,7 +1816,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="edit_button_3">
+                       <widget class="QPushButton" name="editstaff_button">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1845,7 +1845,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="pushButton_9">
+                       <widget class="QPushButton" name="deletestaff_button">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1874,7 +1874,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="pushButton_10">
+                       <widget class="QPushButton" name="checkstaff_button">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1903,7 +1903,7 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="pushButton_11">
+                       <widget class="QPushButton" name="xuatexcelstaff_button">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -2119,11 +2119,7 @@
             <widget class="QWidget" name="widget_12" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_15">
               <item>
-               <widget class="QLabel" name="label_22">
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-               </widget>
+               <widget class="QTableView" name="staff_table"/>
               </item>
              </layout>
             </widget>
