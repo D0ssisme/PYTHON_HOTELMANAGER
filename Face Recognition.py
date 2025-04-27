@@ -1,4 +1,7 @@
-"""
+
+
+
+from keras.models import load_model
 import os
 from PIL import Image
 import numpy as np
@@ -40,42 +43,51 @@ def extract_faces(dataset_path, save_path="faces"):
 
 
 extract_faces("C:/PYTHON/dataset")
-"""
 
 
-import cv2
-import numpy as np
-from keras.models import load_model
 
 
-# Load mô hình Facenet
+# Load model Facenet
 model = load_model("facenet_model/facenet_keras_2024.h5")
 print("✅ Load model thành công!")
 
-# Hàm tiền xử lý ảnh cho mô hình Facenet
+# Hàm tiền xử lý ảnh
 def preprocess_image(img_path):
-    # Đọc ảnh từ file
     img = cv2.imread(img_path)
-    # Resize ảnh về kích thước 160x160 mà mô hình yêu cầu
     img = cv2.resize(img, (160, 160))
-    # Chuyển đổi ảnh sang dạng float32 và chuẩn hóa giá trị pixel
     img = img.astype('float32')
-    img = (img - 127.5) / 128.0  # chuẩn hóa theo Facenet
-    # Thêm chiều batch size
+    img = (img - 127.5) / 128.0
     img = np.expand_dims(img, axis=0)
     return img
 
-# Hàm lấy embedding từ mô hình
+# Hàm lấy embedding
 def get_embedding(model, img_path):
     img = preprocess_image(img_path)
-    # Chạy ảnh qua mô hình để lấy embedding
     embedding = model.predict(img)
-    return embedding
+    return embedding[0]  # lấy ra vector 512 chiều
 
-# Đọc ảnh và lấy embedding
-img_path = "faces/CR7_KH003/IMG1.jpg"  # Bỏ dấu '/' đầu
- # Đảm bảo đường dẫn đầy đủ
+# Tạo list lưu embedding và label
+embeddings = []
+labels = []
 
-embedding = get_embedding(model, img_path)
+# Folder faces đã detect sẵn
+faces_folder = "faces/"
 
-print("Embedding của ảnh:", embedding)
+for person_name in os.listdir(faces_folder):
+    person_folder = os.path.join(faces_folder, person_name)
+    if not os.path.isdir(person_folder):
+        continue
+    for filename in os.listdir(person_folder):
+        img_path = os.path.join(person_folder, filename)
+        embedding = get_embedding(model, img_path)
+        embeddings.append(embedding)
+        labels.append(person_name)
+        print(f"✅ Đã lấy embedding cho {img_path}")
+
+# Chuyển thành mảng numpy
+embeddings = np.asarray(embeddings)
+labels = np.asarray(labels)
+
+# Lưu vào file
+np.savez_compressed('faces_embeddings.npz', embeddings=embeddings, labels=labels)
+print("✅ Đã lưu embeddings vào file faces_embeddings.npz!")
