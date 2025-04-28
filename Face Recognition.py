@@ -10,7 +10,6 @@ import cv2
 
 def extract_faces(dataset_path, save_path="faces"):
     detector = MTCNN()
-
     if not os.path.exists(save_path):
         os.makedirs(save_path)
 
