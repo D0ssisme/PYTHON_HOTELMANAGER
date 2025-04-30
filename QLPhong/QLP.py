@@ -31,12 +31,13 @@ class DataBase:
     def __init__(self):
         self.connection = None
         self.connect()
+
     def connect(self):
         try:
-            server = r"DESKTOP-5P464VF\MSSQLSERVER2022"
+            server = r"DESKTOP-3FTCGLC\SQLSERVER2022"
             database = "HotelManagement"
-            username = "hotel_user"
-            password = "1234"
+            username = "manhdung"
+            password = "29052005"
 
             self.connection = pyodbc.connect(
                 f"DRIVER={{ODBC Driver 17 for SQL Server}};"

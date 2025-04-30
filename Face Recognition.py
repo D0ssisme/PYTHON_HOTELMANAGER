@@ -1,5 +1,5 @@
 
-
+# BƯỚC 1 DÙNG MTCNN ĐỂ LẤY ẢNH KHUÔN MẶT KHÁCH VÀ OPENCV ĐỂ RESIZE ẢNH VỀ 160X160
 
 from keras.models import load_model
 import os
@@ -45,8 +45,8 @@ extract_faces("C:/PYTHON/dataset")
 
 
 
+#BƯỚC 2 DÙNG FACENET TRÍCH XUẤT RA VECTOR ĐẶC TRƯNG TỪ CÁC ẢNH ĐÃ QUA XỬ LÍ BẰNG MTCNN VÀ LƯU NÓ VÀO FILE ĐUÔI NPZ  CÙNG LABEL ĐỂ ĐƯA VÀO SVM TRAIN
 
-# Load model Facenet
 model = load_model("facenet_model/facenet_keras_2024.h5")
 print("✅ Load model thành công!")
 

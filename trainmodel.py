@@ -1,7 +1,7 @@
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 import numpy as np
-
+#BƯỚC 3 TRAIN SVM DỰA TRÊN VECTOR VÀ LABEL CỦA KHÁCH ĐÃ LƯU VÀO FILE NPZ
 # Load embeddings đã lưu
 data = np.load('faces_embeddings.npz')
 embeddings, labels = data['embeddings'], data['labels']

@@ -7,6 +7,13 @@
     font-weight: bold;
     border: 1px solid #d9d9d9;
 }
+#phieuthue_tableview QHeaderView::section {
+    background-color: #2E86C1;
+    color: white;
+    padding: 4px;
+    font-weight: bold;
+    border: 1px solid #d9d9d9;
+}
 * {
     font-family: "Arial";
     font-size: 10pt;
@@ -115,12 +122,28 @@ QPushButton#customer_btn2 {
 
 
 }
+
+QPushButton#phieuthue_btn2 {
+   text-align: left;
+
+
+}
+QPushButton#phieudatphong_btn2 {
+   text-align: left;
+
+
+}
+
+
+
+
 QPushButton#staff_btn2 {
    text-align: left;
      spacing: 100px;
 
 
 }
+
 QPushButton#refresh_button {
 
     border: none;
@@ -136,4 +159,26 @@ QPushButton#refresh_button {
 
 QTableView#customer_table {
     border: none;
+
 }
+QTableView#phieuthue_tableview {
+    border: none;
+
+}
+
+
+QPushButton#loc_btn {
+
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    min-width: 100px;
+    min-height: 35x;
+    max-width: 100px;
+    max-height: 35px;
+
+    background-color: #99FFFF;
+}
+
+
+

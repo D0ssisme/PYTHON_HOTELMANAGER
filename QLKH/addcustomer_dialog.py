@@ -19,12 +19,12 @@ class addcustomer_dialog(QtWidgets.QDialog):
         self.country_combobox.addItems(countries)
 
 
-        self.ngaynhan_datatime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
-        self.ngaynhan_datatime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
-        self.ngaynhan_datatime.setCalendarPopup(True)  # Cho phép hiển thị popup lịch
-        self.ngaytra_datatime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
-        self.ngaytra_datatime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
-        self.ngaytra_datatime.setCalendarPopup(True)
+        self.ngaynhan_datetime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
+        self.ngaynhan_datetime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
+        self.ngaynhan_datetime.setCalendarPopup(True)  # Cho phép hiển thị popup lịch
+        self.ngaytra_datetime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
+        self.ngaytra_datetime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
+        self.ngaytra_datetime.setCalendarPopup(True)
         self.add_agreebutton.clicked.connect(self.check_addcustomer)
         self.cancel_button.clicked.connect(self.closedialog)
 

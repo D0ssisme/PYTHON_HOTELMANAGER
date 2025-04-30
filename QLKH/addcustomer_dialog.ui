@@ -253,10 +253,10 @@
           <widget class="QLineEdit" name="maphong_input"/>
          </item>
          <item>
-          <widget class="QDateTimeEdit" name="ngaynhan_datatime"/>
+          <widget class="QDateTimeEdit" name="ngaynhan_datetime"/>
          </item>
          <item>
-          <widget class="QDateTimeEdit" name="ngaytra_datatime"/>
+          <widget class="QDateTimeEdit" name="ngaytra_datetime"/>
          </item>
         </layout>
        </widget>
