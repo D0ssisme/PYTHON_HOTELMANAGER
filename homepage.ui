@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1424</width>
-    <height>769</height>
+    <width>1503</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -179,6 +179,12 @@
            <height>25</height>
           </size>
          </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -206,6 +212,9 @@
            <width>25</width>
            <height>25</height>
           </size>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -374,153 +383,9 @@
      <widget class="QWidget" name="widget_3" native="true">
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QWidget" name="widget_4" native="true">
-         <property name="minimumSize">
-          <size>
-           <width>40</width>
-           <height>40</height>
-          </size>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>5</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="change_btn">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>47</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>image/option.png</normaloff>image/option.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>25</width>
-              <height>25</height>
-             </size>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_35">
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>40</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>500</width>
-              <height>500</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>Segoe UI Semibold</family>
-              <pointsize>20</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>HỆ THỐNG QUẢN LÍ KHÁCH SẠN</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="user_btn1">
-            <property name="minimumSize">
-             <size>
-              <width>50</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>50</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>image/account.svg</normaloff>image/account.svg</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>50</width>
-              <height>50</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout"/>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QStackedWidget" name="widget_page">
          <property name="currentIndex">
-          <number>2</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="main">
           <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -700,7 +565,7 @@
                          </size>
                         </property>
                         <property name="placeholderText">
-                         <string>nhập mã khách hàng muốn tìm</string>
+                         <string>NHẬP MÃ PHÒNG</string>
                         </property>
                        </widget>
                       </item>
@@ -1328,9 +1193,6 @@
                  <string notr="true">QScrollArea {
     border: none;
 }
-QScrollArea::frame {
-    border: none;
-}
 </string>
                 </property>
                 <property name="widgetResizable">
@@ -1341,13 +1203,13 @@ QScrollArea::frame {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>747</width>
-                   <height>582</height>
+                   <width>100</width>
+                   <height>30</height>
                   </rect>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>1500</width>
+                   <width>16777215</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -1374,7 +1236,7 @@ QScrollArea::frame {
                    <widget class="QWidget" name="room_layout" native="true">
                     <property name="maximumSize">
                      <size>
-                      <width>1500</width>
+                      <width>16777215</width>
                       <height>16777215</height>
                      </size>
                     </property>
@@ -1518,7 +1380,7 @@ QScrollArea::frame {
                     <item row="0" column="3">
                      <widget class="QPushButton" name="btn_checkout">
                       <property name="text">
-                       <string>BTN_CHECKOUT</string>
+                       <string>TRẢ PHÒNG</string>
                       </property>
                      </widget>
                     </item>
@@ -1557,7 +1419,7 @@ QScrollArea::frame {
                        </size>
                       </property>
                       <property name="text">
-                       <string>BTN_CHECKIN</string>
+                       <string>THUÊ PHÒNG</string>
                       </property>
                      </widget>
                     </item>
@@ -1665,7 +1527,7 @@ QScrollArea::frame {
                        <number>0</number>
                       </property>
                       <item>
-                       <widget class="QPushButton" name="addcustomer_button_2">
+                       <widget class="QPushButton" name="addphieudat_btn">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1694,7 +1556,7 @@ QScrollArea::frame {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="editcustomer_button_2">
+                       <widget class="QPushButton" name="editphieudat_btn">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1723,7 +1585,7 @@ QScrollArea::frame {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="deletecustomer_button_2">
+                       <widget class="QPushButton" name="deletephieudat_btn">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -1752,7 +1614,7 @@ QScrollArea::frame {
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="checkcustomer_button_2">
+                       <widget class="QPushButton" name="checkphieudat">
                         <property name="minimumSize">
                          <size>
                           <width>50</width>
@@ -3847,8 +3709,6 @@ QScrollArea::frame {
         </widget>
        </item>
       </layout>
-      <zorder>widget_page</zorder>
-      <zorder>widget_4</zorder>
      </widget>
     </item>
     <item row="0" column="0">
@@ -4173,38 +4033,6 @@ QScrollArea::frame {
  <resources/>
  <connections>
   <connection>
-   <sender>change_btn</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widget</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>309</x>
-     <y>32</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>35</x>
-     <y>428</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>change_btn</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widget_2</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>345</x>
-     <y>57</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>196</x>
-     <y>527</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>main_btn2</sender>
    <signal>toggled(bool)</signal>
    <receiver>main_btn</receiver>
@@ -4243,12 +4071,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>175</x>
-     <y>194</y>
+     <x>259</x>
+     <y>388</y>
     </hint>
     <hint type="destinationlabel">
-     <x>24</x>
-     <y>189</y>
+     <x>33</x>
+     <y>369</y>
     </hint>
    </hints>
   </connection>
@@ -4259,12 +4087,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>239</y>
+     <x>212</x>
+     <y>441</y>
     </hint>
     <hint type="destinationlabel">
-     <x>35</x>
-     <y>238</y>
+     <x>44</x>
+     <y>419</y>
     </hint>
    </hints>
   </connection>
@@ -4291,12 +4119,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>232</x>
-     <y>388</y>
+     <x>283</x>
+     <y>494</y>
     </hint>
     <hint type="destinationlabel">
-     <x>46</x>
-     <y>340</y>
+     <x>55</x>
+     <y>469</y>
     </hint>
    </hints>
   </connection>
@@ -4339,12 +4167,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>27</x>
-     <y>179</y>
+     <x>36</x>
+     <y>369</y>
     </hint>
     <hint type="destinationlabel">
-     <x>143</x>
-     <y>205</y>
+     <x>227</x>
+     <y>388</y>
     </hint>
    </hints>
   </connection>
@@ -4355,12 +4183,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>31</x>
-     <y>247</y>
+     <x>40</x>
+     <y>419</y>
     </hint>
     <hint type="destinationlabel">
-     <x>147</x>
-     <y>250</y>
+     <x>231</x>
+     <y>441</y>
     </hint>
    </hints>
   </connection>
@@ -4387,12 +4215,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>29</x>
-     <y>338</y>
+     <x>38</x>
+     <y>469</y>
     </hint>
     <hint type="destinationlabel">
-     <x>131</x>
-     <y>347</y>
+     <x>215</x>
+     <y>494</y>
     </hint>
    </hints>
   </connection>
@@ -4403,12 +4231,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>29</x>
-     <y>380</y>
+     <x>38</x>
+     <y>269</y>
     </hint>
     <hint type="destinationlabel">
-     <x>174</x>
-     <y>399</y>
+     <x>258</x>
+     <y>282</y>
     </hint>
    </hints>
   </connection>
@@ -4419,12 +4247,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>47</x>
-     <y>436</y>
+     <x>56</x>
+     <y>219</y>
     </hint>
     <hint type="destinationlabel">
-     <x>197</x>
-     <y>460</y>
+     <x>281</x>
+     <y>229</y>
     </hint>
    </hints>
   </connection>
@@ -4435,12 +4263,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>208</x>
-     <y>400</y>
+     <x>283</x>
+     <y>282</y>
     </hint>
     <hint type="destinationlabel">
-     <x>45</x>
-     <y>381</y>
+     <x>54</x>
+     <y>269</y>
     </hint>
    </hints>
   </connection>
@@ -4451,12 +4279,12 @@ QScrollArea::frame {
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>220</x>
-     <y>460</y>
+     <x>283</x>
+     <y>229</y>
     </hint>
     <hint type="destinationlabel">
-     <x>46</x>
-     <y>434</y>
+     <x>55</x>
+     <y>219</y>
     </hint>
    </hints>
   </connection>

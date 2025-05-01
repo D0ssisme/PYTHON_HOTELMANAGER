@@ -50,7 +50,7 @@ class mainui(QMainWindow):
         self.bill_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.bill))
         self.phieuthue_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.phieuthue))
         self.phieudatphong_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.phieudat))
-        self.set_khachhang_table()
+
 
         self.logout_btn2.clicked.connect(self.logout)
         self.logout_btn.clicked.connect(self.logout)
@@ -62,6 +62,7 @@ class mainui(QMainWindow):
         self.user_btn3.clicked.connect(lambda: self.open_edituserdialog(self.username,self.password))
         self.username_input.setText(username)
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
+        self.loc_phieuthue.addItems(["Tất Cả", "mã khách hàng"])
 ##############################################################################
                     #khách hàng
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
@@ -94,16 +95,17 @@ class mainui(QMainWindow):
         self.load_rooms()
         self.loaddata_phieuthue()
         self.btn_check.clicked.connect(lambda : self.open_thuephong_dialog(self.maphong_output.text()))
-
         self.btn_checkout.clicked.connect(lambda :self.checkout(self.maphong_output.text()))
+        self.addphieudat_btn.clicked.connect(self.open_datphong_dialog)
+##############################################################################
+        # phiếu thuê
+
+        self.locphieuthue_btn.clicked.connect(self.search_tablephieuthue)
+
+        self.loaddata_phieudattableview()
 
 
-
-
-
-
-
-        ######################################
+###############################################################################
         # Nhân viên
         self.load_staff_data()
         self.addstaff_button.clicked.connect(self.open_addstaff_dialog)
@@ -113,11 +115,70 @@ class mainui(QMainWindow):
 
 
 
+
+
+######################################################
+    #phiếu đặt phòng
+    def open_datphong_dialog(self):
+        try:
+            from QLPhong.datphong_dialog import datphong_dialog  # Điều chỉnh theo đúng thư mục bạn lưu file .py
+            dialog = datphong_dialog()
+            dialog.exec_()
+            self.loaddata_phieudattableview()  # Hàm này bạn cần có để load lại bảng nhân viên
+        except Exception as e:
+            print("Lỗi khi mở dialog đặt phòng:", e)
+
+
+    def loaddata_phieudattableview(self):
+
+        phieudat = self.db.get_phieudat()
+
+        # 2. Tạo model với số cột phù hợp
+        self.model = QStandardItemModel()
+        self.model.setHorizontalHeaderLabels([
+            "Mã Phiếu Đặt", "Mã Phòng", "Ngày Đặt", "Ngày Nhận",
+            "Ngày Trả", "Trạng Thái"
+        ])
+
+        # 3. Đổ dữ liệu từ SQL vào model
+        for row in phieudat:
+            row_items = [QStandardItem(str(cell)) for cell in row]
+            self.model.appendRow(row_items)
+
+        # 4. Gắn model vào QTableView
+        self.phieudat_tableview.setModel(self.model)
+
+        # 5. Căn chỉnh cột cho đẹp
+        header = self.phieudat_tableview.horizontalHeader()
+        for column in range(self.model.columnCount()):
+            header.setSectionResizeMode(column, QHeaderView.Stretch)
+
+
+
 ###############################################################################################
                                     #đặt phòng
 
+
+    def search_tablephieuthue(self):
+
+        if  self.loc_phieuthue.currentText()=="Tất Cả":
+            self.loaddata_phieuthue()
+        else :
+            self.close_table()
+            maphong=self.loc_inputphieuthue.text()
+            phieuthue = self.db.find_phieuthue(maphong)
+            for row in phieuthue:
+                row_items = [QStandardItem(str(cell)) for cell in row]
+                self.model.appendRow(row_items)
+            if(maphong==""):
+                self.close_table()
+
+
     def checkout(self, maphong):
         # Lấy phiếu thuê đang hoạt động của phòng này
+        if maphong=="":
+            QMessageBox.warning(self,"CẢNH BÁO","VUI LÒNG CHỌN PHÒNG MUỐN TRẢ ")
+            return
 
         maphieuthue = self.db.get_maphieuthue_by_room(maphong)
         if not maphieuthue:
@@ -144,6 +205,9 @@ class mainui(QMainWindow):
                 QMessageBox.critical(self, "LỖI", "Trả phòng thất bại. Vui lòng thử lại.")
 
     def open_thuephong_dialog(self,maphong):
+        if maphong=="":
+            QMessageBox.warning(self,"CẢNH BÁO ","VUI LÒNG CHỌN PHÒNG MUỐN THUÊ")
+            return
         from QLPhong.thuephong_dialog import thuephong_dialog
         dialog = thuephong_dialog(maphong)
 
@@ -796,10 +860,7 @@ class mainui(QMainWindow):
                                   background-color: 	#D5D5D5;
                                       border-radius:10px;
                               }
-                              QPushButton:checked {
-                              background-color: #D5D5D5;
-                              }
-
+                           
                               """
 
             # Cặp nút: [(nút to, nút nhỏ), ...]
@@ -810,8 +871,9 @@ class mainui(QMainWindow):
                 (self.staff_btn, self.staff_btn2),
                 (self.report_btn, self.report_btn2),
                 (self.bill_btn, self.bill_btn2),
-                (self.phieuthue_btn, self.phieuthue_btn2),
-                (self.bill_btn, self.bill_btn2)
+                (self.phieudatphong_btn, self.phieudatphong_btn2),
+                (self.phieuthue_btn, self.phieuthue_btn2)
+
 
             ]
 

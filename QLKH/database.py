@@ -38,6 +38,14 @@ class DataBase:
             print("Lỗi khi lấy dữ liệu khách hàng:", e)
             return []
 
+    def get_phieudat(self):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT * FROM phieudat")
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy dữ liệu phiếu đặt  :", e)
+            return []
     def check_login(self, username, password):
         try:
             cursor = self.connection.cursor()
@@ -65,6 +73,16 @@ class DataBase:
             print("Lỗi khi lấy dữ liệu khách hàng:", e)
             return []
 
+
+
+    def find_phieuthue(self,maphphong):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(f"SELECT * FROM phieuthue WHERE maphong LIKE '{maphphong}%'")
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy dữ liệu khách hàng:", e)
+            return []
 
 
     def add_customer(self, customer_data):
@@ -350,6 +368,16 @@ class DataBase:
             num = 1
         return f"PT{num:03d}"
 
+    def autocreate_maphieudat(self):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT TOP 1 maphieudat FROM phieudat ORDER BY maphieudat DESC")
+        last = cursor.fetchone()
+        if last:
+            num = int(last[0][2:]) + 1
+        else:
+            num = 1
+        return f"PT{num:03d}"
+
     def create_phieuthue(self, maphieuthue, maphong, ngaynhan, ngaytra, tinhtrang):
         cursor = self.connection.cursor()
         query = """
@@ -358,6 +386,19 @@ class DataBase:
         """
         try:
             cursor.execute(query, (maphieuthue, maphong, ngaynhan, ngaytra, tinhtrang))
+            self.connection.commit()
+            return True
+        except pyodbc.Error as e:
+            print(f"Lỗi khi tạo phiếu thuê: {e}")
+            return False
+    def creat_phieudat(self, maphieudat, maphong,ngaydat, ngaynhan, ngaytra, trangthai):
+        cursor = self.connection.cursor()
+        query = """
+            INSERT INTO phieudat (maphieudat, maphong,ngaydat,ngaynhan, ngaytra, trangthai)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """
+        try:
+            cursor.execute(query, (maphieudat, maphong,ngaydat, ngaynhan, ngaytra, trangthai))
             self.connection.commit()
             return True
         except pyodbc.Error as e:
@@ -373,6 +414,16 @@ class DataBase:
             return True
         except pyodbc.Error as e:
             print(f"Lỗi khi thêm vào chitietphieuthuephong: {e}")
+            return False
+    def add_ct_phieudat(self, maphieudat, makh):
+        cursor = self.connection.cursor()
+        query = "INSERT INTO chitietphieudatphong (maphieudat, makh) VALUES (?, ?)"
+        try:
+            cursor.execute(query, (maphieudat, makh))
+            self.connection.commit()
+            return True
+        except pyodbc.Error as e:
+            print(f"Lỗi khi thêm vào chitietphieudatphong: {e}")
             return False
 
     def get_phieuthue(self):
