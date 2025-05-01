@@ -7,7 +7,16 @@
     font-weight: bold;
     border: 1px solid #d9d9d9;
 }
+
 #phieuthue_tableview QHeaderView::section {
+    background-color: #2E86C1;
+    color: white;
+    padding: 4px;
+    font-weight: bold;
+    border: 1px solid #d9d9d9;
+}
+
+#khachdat_tableview QHeaderView::section {
     background-color: #2E86C1;
     color: white;
     padding: 4px;
@@ -193,6 +202,5 @@ QPushButton#loc_btn {
 
     background-color: #99FFFF;
 }
-
 
 

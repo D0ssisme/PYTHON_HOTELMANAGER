@@ -452,6 +452,22 @@ class DataBase:
             print("Lỗi khi lấy dữ liệu phiếu thuê:", e)
             return []
 
+    def get_chitietphieudat(self, maphieudat):
+        try:
+            cursor = self.connection.cursor()
+            query = """
+                SELECT kh.makh, kh.hoten, kh.gioitinh, kh.quoctich, kh.cccd, kh.sdt, kh.diachi 
+                FROM phieudat pd
+                JOIN chitietphieudatphong ctpd ON pd.maphieudat = ctpd.maphieudat
+                JOIN khachhang kh ON ctpd.makh = kh.makh
+                WHERE pd.maphieudat = ?
+            """
+            cursor.execute(query, (maphieudat,))
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy dữ liệu phiếu thuê:", e)
+            return []
+
     def checkout_room(self, maphieuthue, maphong):
         try:
             cursor = self.connection.cursor()
@@ -477,4 +493,77 @@ class DataBase:
         except pyodbc.Error as e:
             print(f"Lỗi khi lấy maphieuthue: {e}")
             return None
+
+    def find_phieutdat(self, maphieudat):
+        try:
+            cursor = self.connection.cursor()
+            query = "SELECT * FROM phieudat WHERE maphieudat = ?"
+            cursor.execute(query, (maphieudat,))
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy dữ liệu phiếu đặt:", e)
+            return []
+
+    def nhan_phong_tu_phieudat(self, maphieudat):
+        try:
+            cursor = self.connection.cursor()
+
+            # Lấy thông tin phiếu đặt
+            cursor.execute("SELECT maphong, ngaynhan, ngaytra FROM phieudat WHERE maphieudat = ?", (maphieudat,))
+            row = cursor.fetchone()
+            if not row:
+                print("Không tìm thấy phiếu đặt")
+                return False
+
+            maphong, ngaynhan, ngaytra = row
+            from datetime import datetime
+            maphieuthue = "PT" + datetime.now().strftime("%Y%m%d%H%M%S")
+
+            # Thêm vào phieuthue
+            cursor.execute("""
+                INSERT INTO phieuthue (maphieuthue, maphong, ngaynhan, ngaytra, tinhtrang)
+                VALUES (?, ?, ?, ?, N'ĐANG THUÊ')
+            """, (maphieuthue, maphong, ngaynhan, ngaytra))
+
+            # Copy khách từ chitietphieudat
+            cursor.execute("""
+                INSERT INTO chitietphieuthuephong (maphieuthue, makh)
+                SELECT ?, makh FROM chitietphieudatphong WHERE maphieudat = ?
+            """, (maphieuthue, maphieudat))
+
+            # Cập nhật trạng thái phiếu đặt
+            cursor.execute("""
+                UPDATE phieudat SET trangthai = N'ĐÃ NHẬN' WHERE maphieudat = ?
+            """, (maphieudat,))
+            cursor.execute("""
+                UPDATE phong SET trangthai = N'ĐANG THUÊ' WHERE maphong = ?
+            """, (maphong,))
+            self.connection.commit()
+            print("Nhận phòng thành công!")
+            return True
+
+        except Exception as e:
+            print("Lỗi khi nhận phòng:", e)
+            self.connection.rollback()
+            return False
+
+    def huyphieudat(self, maphieudat):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                UPDATE phieudat SET trangthai = N'ĐÃ HỦY' WHERE maphieudat = ?
+            """, (maphieudat,))
+            self.connection.commit()
+            print("Hủy phiếu đặt thành công!")
+            return True
+        except Exception as e:
+            print("Lỗi khi hủy phiếu đặt:", e)
+            self.connection.rollback()
+            return False
+
+    def lay_ds_khach_tu_phieudat(self, maphieudat):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT makh FROM chitietphieudatphong WHERE maphieudat = ?", (maphieudat,))
+        return [row[0] for row in cursor.fetchall()]
+
 

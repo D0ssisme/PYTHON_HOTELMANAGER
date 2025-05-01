@@ -97,12 +97,23 @@ class mainui(QMainWindow):
         self.btn_check.clicked.connect(lambda : self.open_thuephong_dialog(self.maphong_output.text()))
         self.btn_checkout.clicked.connect(lambda :self.checkout(self.maphong_output.text()))
         self.addphieudat_btn.clicked.connect(self.open_datphong_dialog)
-##############################################################################
+        self.phieudat_tableview.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.phieudat_tableview.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
+        self.phieudat_tableview.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.phieudat_tableview.verticalHeader().setVisible(False)
+
+        self.nhanphong_btn.clicked.connect( self.open_nhanphong_dialog)
+        self.huyphieudat_btn.clicked.connect(self.cancel_nhanphong_dialog)
+
+        ##############################################################################
         # phiếu thuê
 
         self.locphieuthue_btn.clicked.connect(self.search_tablephieuthue)
-
         self.loaddata_phieudattableview()
+        self.locphieudat_combobox.addItems(["TẤT CẢ", "SỐ ĐIỆN THOẠI","CĂN CƯỚC CÔNG DÂN"])
+        self.loc_phieuthue2.addItems(["ĐANG THUÊ", "ĐÃ TRẢ"])
+        self.locphieudat_combobox2.addItems(["ĐANG CHỜ", "ĐÃ NHẬN","ĐÃ HỦY"])
+
 
 
 ###############################################################################
@@ -119,6 +130,75 @@ class mainui(QMainWindow):
 
 ######################################################
     #phiếu đặt phòng
+
+
+    def loadwindow(self):
+        self.load_rooms()
+        self.loaddata_phieudattableview()
+        self.loaddata_phieuthue()
+        self.load_staff_data()
+        self.loaddata_tablecustomer()
+
+    def cancel_nhanphong_dialog(self):
+        index = self.phieudat_tableview.currentIndex()
+        if index.isValid():
+            row = index.row()
+            model = self.phieudat_tableview.model()
+            trangthai = model.index(row, 5).data()
+
+            if trangthai == "ĐÃ NHẬN":
+                QMessageBox.warning(self, "CẢNH BÁO", "PHIẾU ĐẶT ĐÃ ĐƯỢC XÁC NHẬN")
+                return
+            if trangthai == "ĐÃ HỦY":
+                QMessageBox.warning(self, "CẢNH BÁO", "PHIẾU ĐẶT ĐÃ BỊ HỦY TRƯỚC ĐÓ")
+                return
+
+            maphieudat = model.index(row, 0).data()
+
+            # ✅ Hỏi xác nhận hủy
+            reply = QMessageBox.question(
+                self,
+                "Xác nhận hủy",
+                f"Bạn có chắc chắn muốn hủy phiếu đặt [{maphieudat}] không?",
+                QMessageBox.Yes | QMessageBox.No
+            )
+
+            if reply == QMessageBox.Yes:
+                if self.db.huyphieudat(maphieudat):
+                    QMessageBox.information(self, "Thành công", "Đã hủy phiếu đặt.")
+                    self.loadwindow()
+                else:
+                    QMessageBox.warning(self, "Lỗi", "Không thể hủy phiếu đặt.")
+            else:
+                # Người dùng chọn No
+                return
+        else:
+            QMessageBox.warning(self, "CẢNH BÁO", "VUI LÒNG CHỌN PHIẾU ĐẶT!")
+
+    def open_nhanphong_dialog(self):
+
+        index = self.phieudat_tableview.currentIndex()
+        if index.isValid():
+            row = index.row()
+            model = self.phieudat_tableview.model()
+            trangthai=model.index(row,5).data()
+            if(trangthai=="ĐÃ NHẬN"):
+                QMessageBox.warning(self,"CẢNH BÁO","PHIẾU ĐẶT ĐÃ ĐƯỢC XÁC NHẬN")
+                return
+            if (trangthai == "ĐÃ HỦY"):
+                QMessageBox.warning(self, "CẢNH BÁO", "PHIẾU ĐẶT ĐÃ ĐƯỢC BỊ HỦY")
+                return
+            maphieudat = model.index(row, 0).data()  # 0 là số thứ tự cột bạn muốn lấy
+            from QLPhong.nhanphong_dialog import nhanphong_dialog
+            dialog = nhanphong_dialog(maphieudat)
+            dialog.exec_()
+            self.loadwindow()
+
+        else :
+            QMessageBox.warning(self,"CẢNH BÁO ","VUI LÒNG CHỌN PHIẾU ĐẶT ! ")
+            return
+
+
     def open_datphong_dialog(self):
         try:
             from QLPhong.datphong_dialog import datphong_dialog  # Điều chỉnh theo đúng thư mục bạn lưu file .py

@@ -91,7 +91,7 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
         # Sau khi thêm hết khách hàng, cập nhật trạng thái phòng
         # Tạo mã phiếu thuê mới (có thể sinh ngẫu nhiên hoặc tự động)
         maphieudat = self.db.autocreate_maphieudat()
-        ngaydat = datetime.now()  # Thời gian hiện tại
+        ngaydat = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # Tạo phiếu thuê
         self.db.creat_phieudat(maphieudat, self.maphong,ngaydat, ngaynhan, ngaytra, "ĐANG CHỜ ")
 
