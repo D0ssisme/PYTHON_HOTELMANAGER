@@ -138,6 +138,7 @@ class mainui(QMainWindow):
         self.loaddata_phieuthue()
         self.load_staff_data()
         self.loaddata_tablecustomer()
+        self.show_room_info()
 
     def cancel_nhanphong_dialog(self):
         index = self.phieudat_tableview.currentIndex()
@@ -279,8 +280,7 @@ class mainui(QMainWindow):
 
             if success:
                 QMessageBox.information(self, "THÀNH CÔNG", "Trả phòng thành công!")
-                self.load_rooms()
-                self.loaddata_phieuthue()
+                self.loadwindow()
             else:
                 QMessageBox.critical(self, "LỖI", "Trả phòng thất bại. Vui lòng thử lại.")
 

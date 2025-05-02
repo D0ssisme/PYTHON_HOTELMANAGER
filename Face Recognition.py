@@ -41,7 +41,7 @@ def extract_faces(dataset_path, save_path="faces"):
                 print(f"Không tìm thấy khuôn mặt trong ảnh: {file_path}")
 
 
-extract_faces("C:/PYTHON/dataset")
+extract_faces("C:/PYTHON/datatest")
 
 
 

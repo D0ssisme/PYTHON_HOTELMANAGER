@@ -47,9 +47,9 @@ def recognize_face_from_camera():
                 print("✅ Nhận diện thành công:", predicted_name)
                 return predicted_name
             else:
-                print("🚫 Không chắc chắn. Hãy thử lại!")
+                print("🚫 xác thực thất bại . Hãy thử lại!")
 
-        cv2.imshow("Nhận diện khuôn mặt", frame)
+        cv2.imshow("NHAN DIEN ", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 

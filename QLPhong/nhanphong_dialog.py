@@ -81,14 +81,14 @@ class nhanphong_dialog(QDialog):  # ❗ Kế thừa QDialog
 
     def check_agreenhanphong(self,maphieudat):
         list_makh = self.db.lay_ds_khach_tu_phieudat(maphieudat)
-        name = recognize_face_from_camera()
+        makh = recognize_face_from_camera()
 
-        if name is None:
+        if makh is None:
             QMessageBox.warning(self, "THẤT BẠI", "Không nhận diện được khuôn mặt.")
             return
 
-        if name not in list_makh:
-            QMessageBox.warning(self, "Sai người", f"{name} không có trong danh sách khách hàng của phiếu đặt này.")
+        if makh not in list_makh:
+            QMessageBox.warning(self, "Sai người", f"{makh} không có trong danh sách khách hàng của phiếu đặt này.")
             return
 
         if self.db.nhan_phong_tu_phieudat(maphieudat):
