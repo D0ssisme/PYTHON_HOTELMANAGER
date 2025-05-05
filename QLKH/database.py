@@ -46,6 +46,134 @@ class DataBase:
         except Exception as e:
             print("Lỗi khi lấy dữ liệu phiếu đặt  :", e)
             return []
+
+    def get_phieuthue_by_makhandtinhtrang(self, tinhtrang, makh):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                SELECT pt.*
+                FROM phieuthue pt
+                JOIN chitietphieuthuephong ctpt ON ctpt.maphieuthue = pt.maphieuthue
+                JOIN khachhang kh ON kh.makh = ctpt.makh
+                WHERE pt.tinhtrang = ? AND kh.makh = ?
+            """, (tinhtrang, makh))  # Truyền tham số tinhtrang và makh
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo mã KH:", e)
+            return []
+
+
+    def get_phieuthue_by_makh(self,makh):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                      SELECT pt.*
+                      FROM phieuthue pt
+                      JOIN chitietphieuthuephong ctpt ON ctpt.maphieuthue = pt.maphieuthue
+                      JOIN khachhang kh ON kh.makh = ctpt.makh
+                      WHERE  kh.makh = ?
+                  """, ( makh,))  # Truyền tham số tinhtrang và makh
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo mã KH:", e)
+            return []
+
+
+
+    def get_phieuthue_by_tinhtrang(self, tinhtrang):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                       SELECT pt.*
+                       FROM phieuthue pt
+                       WHERE tinhtrang= ?
+                   """, (tinhtrang,))  # Chú ý có dấu phẩy sau tham số để tạo tuple
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo tình trạng:", e)
+            return []
+
+
+
+    def get_phieudat_by_sdtandtrangthai(self, trangthai, sdt):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                SELECT pd.*
+                FROM phieudat pd
+                JOIN chitietphieudatphong ctpd ON ctpd.maphieudat = pd.maphieudat
+                JOIN khachhang kh ON kh.makh = ctpd.makh
+                WHERE pd.trangthai = N? AND kh.sdt = ?
+            """, (trangthai, sdt))  # Truyền tham số tinhtrang và makh
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo mã KH:", e)
+            return []
+
+
+
+
+
+    def get_phieudat_by_makhandtrangthai(self, trangthai, makh):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                SELECT pd.*
+                FROM phieudat pd
+                JOIN chitietphieudatphong ctpd ON ctpd.maphieudat = pd.maphieudat
+                JOIN khachhang kh ON kh.makh = ctpd.makh
+                WHERE pd.trangthai = N? AND kh.makh = ?
+            """, (trangthai, makh))  # Truyền tham số tinhtrang và makh
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo mã KH:", e)
+            return []
+
+    def get_phieudat_by_makh(self,makh):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                      SELECT pd.*
+                      FROM phieudat pd
+                      JOIN chitietphieudatphong ctpd ON ctpd.maphieudat = pd.maphieudat
+                      JOIN khachhang kh ON kh.makh = ctpd.makh
+                      WHERE  kh.makh = ?
+                  """, ( makh,))  # Truyền tham số tinhtrang và makh
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo mã KH:", e)
+            return []
+    def get_phieudat_by_sdt(self,sdt):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                            SELECT pd.*
+                            FROM phieudat pd
+                            JOIN chitietphieudatphong ctpd ON ctpd.maphieudat = pd.maphieudat
+                            JOIN khachhang kh ON kh.makh = ctpd.makh
+                            WHERE  kh.sdt = ?
+                        """, (sdt,))  # Truyền tham số tinhtrang và makh
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo mã KH:", e)
+            return []
+
+    def get_phieudat_by_trangthai(self, trangthai):
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("""
+                         SELECT pd.*
+                         FROM phieudat pd
+                         WHERE trangthai= ?
+                     """, (trangthai,))  # Chú ý có dấu phẩy sau tham số để tạo tuple
+            return cursor.fetchall()
+        except Exception as e:
+            print("Lỗi khi lấy phiếu thuê theo tình trạng:", e)
+            return []
+
+
+
+
     def check_login(self, username, password):
         try:
             cursor = self.connection.cursor()
@@ -566,4 +694,22 @@ class DataBase:
         cursor.execute("SELECT makh FROM chitietphieudatphong WHERE maphieudat = ?", (maphieudat,))
         return [row[0] for row in cursor.fetchall()]
 
+    def get_all_available_rooms(self):
+        # Truy vấn tất cả phòng còn trống từ cơ sở dữ liệu
+        try:
+            cursor = self.connection.cursor()  # Tạo con trỏ mới
+            query = "SELECT maphong FROM phong WHERE trangthai=N'TRỐNG'"
+            cursor.execute(query)
+            available_rooms = cursor.fetchall()  # Sử dụng cursor để lấy kết quả
 
+            # Nếu không có phòng trống, trả về danh sách rỗng
+            if not available_rooms:
+                return []
+
+            # Trả về danh sách phòng dưới dạng tuple
+            return available_rooms  # available_rooms là một danh sách các tuple
+
+        except Exception as e:
+            print("Lỗi:", e)
+            self.connection.rollback()
+            return []  # Trả về danh sách rỗng nếu có lỗi

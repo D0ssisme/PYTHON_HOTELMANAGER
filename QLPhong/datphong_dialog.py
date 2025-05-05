@@ -10,7 +10,10 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtWidgets import QHeaderView
 from PyQt5.QtWidgets import QAbstractItemView
 from datetime import datetime
-
+from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon, QPixmap
+from PyQt5.QtWidgets import QFileDialog, QListWidgetItem
+from PyQt5.QtCore import Qt
+import shutil
 
 
 
@@ -27,8 +30,6 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
         self.gioitinh_combobox.addItems(["Nam", "Nữ"])
         self.quoctich_combobox.setEditable(True)
         self.quoctich_combobox.addItem("")  # Thêm dòng trống ở đầu
-        self.select_room.addItems(["P001", "P002"])
-
 
         # Thêm danh sách các quốc gia
         countries = [country.name for country in pycountry.countries]
@@ -40,8 +41,9 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
         self.model = QStandardItemModel()
         self.model.setHorizontalHeaderLabels([
             "Mã KH", "Họ tên", "Giới tính", "Quốc tịch",
-            "CCCD", "SĐT", "Địa chỉ"
+            "CCCD", "SĐT", "Địa chỉ", "img_link"
         ])
+
         self.danhsachkhachthue_tableview.setModel(self.model)
         self.danhsachkhachthue_tableview.setModel(self.model)
         self.danhsachkhachthue_tableview.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -53,10 +55,49 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
         self.ngaytra_datetime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
         self.ngaytra_datetime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
         self.ngaytra_datetime.setCalendarPopup(True)
-
+        self.btn_chooseimg.clicked.connect(self.chooseimg)
         self.db = DataBase()
         self.db.connection = None
         self.db.connect()
+
+        # Khởi tạo model cho listview
+        self.linkimg_model = QStandardItemModel()
+        self.linkimg_listview.setModel(self.linkimg_model)
+
+        phongs = self.db.get_all_available_rooms()
+        phongs = self.db.get_all_available_rooms()
+
+        if phongs:
+            # Xử lý nếu có phòng trống
+            room_codes = [room[0] for room in phongs]  # Lấy mã phòng từ các tuple
+            self.select_room.addItems(room_codes)  # Thêm mã phòng vào dropdown list
+        else:
+            QMessageBox.warning(self, "Lỗi", "Không có phòng trống!")
+
+    from PyQt5.QtGui import QStandardItem, QStandardItemModel, QIcon, QPixmap
+
+    def chooseimg(self):
+        file_paths, _ = QFileDialog.getOpenFileNames(
+            self,
+            "Chọn tối đa 3 ảnh",
+            "",
+            "Ảnh (*.png *.jpg *.jpeg *.bmp)"
+        )
+
+        if len(file_paths) > 3:
+            file_paths = file_paths[:3]
+
+        # Gán model nếu chưa có
+        if not hasattr(self, "linkimg_model"):
+            self.linkimg_model = QStandardItemModel()
+            self.linkimg_model_view.setModel(self.linkimg_model)  # ✅ linkimg_model_view là QListView trong .ui
+
+        self.linkimg_model.clear()
+
+        for file_path in file_paths:
+            item = QStandardItem(file_path)
+            item.setEditable(False)
+            self.linkimg_model.appendRow(item)
 
     def agree_form(self):
         self.maphong = self.select_room.currentText()
@@ -88,19 +129,32 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
                 QMessageBox.warning(self, "Lỗi", f"Không thể thêm khách hàng có mã {makh}. Dừng quá trình.")
                 return
 
+            img_link_str = self.model.item(row, 7).text()  # Cột 7 là img_link
+            if img_link_str:
+                img_paths = img_link_str.split("|")
+                folder_path = os.path.join("dataset", makh)
+                os.makedirs(folder_path, exist_ok=True)
+
+                for i, img_path in enumerate(img_paths):
+                    try:
+                        ext = os.path.splitext(img_path)[1]
+                        new_img_path = os.path.join(folder_path, f"{i + 1}{ext}")
+                        shutil.copy(img_path, new_img_path)
+                    except Exception as e:
+                        print(f"Lỗi copy ảnh: {e}")
         # Sau khi thêm hết khách hàng, cập nhật trạng thái phòng
         # Tạo mã phiếu thuê mới (có thể sinh ngẫu nhiên hoặc tự động)
         maphieudat = self.db.autocreate_maphieudat()
         ngaydat = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # Tạo phiếu thuê
+
+
         self.db.creat_phieudat(maphieudat, self.maphong,ngaydat, ngaynhan, ngaytra, "ĐANG CHỜ ")
 
         # Gắn từng khách vào phiếu thuê
         for row in range(row_count):
             makh = self.model.item(row, 0).text()
             self.db.add_ct_phieudat(maphieudat, makh)
-
-
 
 
         self.accept()
@@ -161,6 +215,14 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
             QStandardItem(diachi),
 
         ]
+        # Lưu các đường dẫn ảnh dưới dạng chuỗi (nối bằng dấu | để phân tách)
+        img_links = []
+
+        for row in range(self.linkimg_model.rowCount()):
+            img_links.append(self.linkimg_model.item(row).text())
+
+        img_link_str = "|".join(img_links)
+        items.append(QStandardItem(img_link_str))
 
         # Thêm vào bảng
         self.model.appendRow(items)

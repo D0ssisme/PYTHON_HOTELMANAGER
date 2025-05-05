@@ -116,7 +116,7 @@ class loginui(object):
             QMessageBox.warning(MainWindow, "Cảnh báo", "Vui lòng nhập đầy đủ thông tin!")
             return
 
-        # Thêm đoạn kiểm tra đăng nhập nếu muốn
+
         db = DataBase()
         if db.checklogin(username, password):
             db.connection.close()

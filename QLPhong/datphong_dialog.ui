@@ -140,8 +140,18 @@
          <item>
           <widget class="QLineEdit" name="diachi_input"/>
          </item>
+         <item>
+          <widget class="QPushButton" name="btn_chooseimg">
+           <property name="text">
+            <string>CHỌN ẢNH</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
+      </item>
+      <item>
+       <widget class="QListView" name="linkimg_listview"/>
       </item>
       <item>
        <widget class="QWidget" name="widget_5" native="true">

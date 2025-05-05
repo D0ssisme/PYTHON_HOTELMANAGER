@@ -1,13 +1,13 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QDialog
+from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
 import os
 from QLKH.database import DataBase
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
+from PyQt5.QtWidgets import QApplication,QHeaderView
 from PyQt5.QtWidgets import QAbstractItemView
-from checkin_module import recognize_face_from_camera
+from src.checkin_module import recognize_face_from_camera
 
 
 class nhanphong_dialog(QDialog):  # ❗ Kế thừa QDialog
@@ -78,10 +78,14 @@ class nhanphong_dialog(QDialog):  # ❗ Kế thừa QDialog
             self.ngaytra_input.setText(str(row[4]))
             self.maphong_input.setText(str(row[1]))
 
-
-    def check_agreenhanphong(self,maphieudat):
+    def check_agreenhanphong(self, maphieudat):
         list_makh = self.db.lay_ds_khach_tu_phieudat(maphieudat)
-        makh = recognize_face_from_camera()
+
+        try:
+            makh = recognize_face_from_camera()
+        except Exception as e:
+            QMessageBox.critical(self, "Lỗi hệ thống", f"Đã xảy ra lỗi khi nhận diện khuôn mặt:\n{e}")
+            return
 
         if makh is None:
             QMessageBox.warning(self, "THẤT BẠI", "Không nhận diện được khuôn mặt.")

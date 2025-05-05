@@ -3,6 +3,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication,QHeaderView
 from PyQt5.QtWidgets import  QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from QLKH.database import DataBase
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtGui import QStandardItem, QColor
+
 
 from PyQt5.QtWidgets import QPushButton
 from functools import partial
@@ -24,15 +27,15 @@ class mainui(QMainWindow):
     def __init__(self,username,password):
         super().__init__()
         self.selected_button = None  # Lưu nút đang được chọn
+        uic.loadUi('homepage.ui', self)
 
-        uic.loadUi('homepage.ui', self)  # Load trực tiếp file .ui
-
-        # Gọi các hàm xử lý hoặc style sau khi load UI
         self.applyStylesheet()
         self.db = DataBase()
         self.db_staff = DataBaseStaff()
         self.db.connection = None
         self.db.connect()
+        self.setFixedSize(1800, 800)
+        self.center_window()
 
         self.main_btn.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.main))
         self.phieuthue_btn.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.phieuthue))
@@ -50,19 +53,17 @@ class mainui(QMainWindow):
         self.bill_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.bill))
         self.phieuthue_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.phieuthue))
         self.phieudatphong_btn2.clicked.connect(lambda: self.widget_page.setCurrentWidget(self.phieudat))
-
-
         self.logout_btn2.clicked.connect(self.logout)
         self.logout_btn.clicked.connect(self.logout)
-        self.deleteroom_button.clicked.connect(self.delete_room)
+
         self.username=username
         self.password=password
         self.user_btn2.clicked.connect(lambda: self.open_edituserdialog(self.username, self.password))
-        self.user_btn1.clicked.connect(lambda: self.open_edituserdialog(self.username,self.password))
+
         self.user_btn3.clicked.connect(lambda: self.open_edituserdialog(self.username,self.password))
         self.username_input.setText(username)
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
-        self.loc_phieuthue.addItems(["Tất Cả", "mã khách hàng"])
+        self.loc_phieuthue.addItems(["TẤT CẢ", "MÃ KHÁCH HÀNG"])
 ##############################################################################
                     #khách hàng
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
@@ -89,6 +90,7 @@ class mainui(QMainWindow):
         self.locloaiphong_combobox.addItems(["TẤT CẢ","ĐƠN", "ĐÔI", "VIP"])
         self.loctrangthai_combobox.addItems(["TẤT CẢ","TRỐNG", "ĐANG THUÊ","ĐANG DỌN DẸP"])
         self.loc_btn.clicked.connect(self.search_room)
+        self.deleteroom_button.clicked.connect(self.delete_room)
         self.tinhtrang_output.setReadOnly(True)
         self.loaiphong_output.setReadOnly(True)
         self.ngaythue_output.setReadOnly(True)
@@ -103,20 +105,23 @@ class mainui(QMainWindow):
         self.phieudat_tableview.verticalHeader().setVisible(False)
 
         self.nhanphong_btn.clicked.connect( self.open_nhanphong_dialog)
-        self.huyphieudat_btn.clicked.connect(self.cancel_nhanphong_dialog)
+
 
         ##############################################################################
-        # phiếu thuê
+        # phiếu thuê,phiếu đặt
 
         self.locphieuthue_btn.clicked.connect(self.search_tablephieuthue)
         self.loaddata_phieudattableview()
         self.locphieudat_combobox.addItems(["TẤT CẢ", "SỐ ĐIỆN THOẠI","CĂN CƯỚC CÔNG DÂN"])
-        self.loc_phieuthue2.addItems(["ĐANG THUÊ", "ĐÃ TRẢ"])
-        self.locphieudat_combobox2.addItems(["ĐANG CHỜ", "ĐÃ NHẬN","ĐÃ HỦY"])
+        self.loc_phieuthue2.addItems(["TẤT CẢ","ĐANG THUÊ", "ĐÃ TRẢ"])
+        self.locphieudat_combobox2.addItems(["TẤT CẢ","ĐANG CHỜ", "ĐÃ NHẬN","ĐÃ HỦY"])
+        self.loc_phieuthue.currentIndexChanged.connect(self.update_input_makh)
 
+        self.locphieudat_btn.clicked.connect(self.search_tablephieudat)
+        self.huyphieudat_btn.clicked.connect(self.cancel_nhanphong_dialog)
+        self.locphieudat_combobox.currentIndexChanged.connect(self.update_input_sdt)
 
-
-###############################################################################
+        ###############################################################################
         # Nhân viên
         self.load_staff_data()
         self.addstaff_button.clicked.connect(self.open_addstaff_dialog)
@@ -129,7 +134,80 @@ class mainui(QMainWindow):
 
 
 ######################################################
-    #phiếu đặt phòng
+    #phiếu đặt
+    def update_input_sdt(self):
+        dieukien = self.locphieudat_combobox.currentText()  # Lấy giá trị đang chọn trong combobox
+        if dieukien != "TẤT CẢ":
+            self.locphieudat_input.setDisabled(False)  # Nếu không phải TẤT CẢ thì disable
+        else:
+            self.locphieudat_input.setDisabled(True)  # Nếu là TẤT CẢ thì enable
+    def search_tablephieudat(self):
+
+
+            # Xóa dữ liệu cũ trong bảng
+            if not hasattr(self, 'model'):  # Kiểm tra xem self.model đã được khởi tạo chưa
+                self.model = QStandardItemModel()  # Khởi tạo nếu chưa có
+
+            self.model.removeRows(0, self.model.rowCount())
+
+            # Lấy giá trị từ các widget giao diện
+            tinhtrang_text = self.locphieudat_combobox2.currentText()  # Lấy trạng thái từ combobox1
+            dieukien = self.locphieudat_combobox.currentText()  # Lấy điều kiện từ combobox2
+            sdt = self.locphieudat_input.text().strip()  # Lấy giá trị từ lineedit
+
+            # Kiểm tra nếu "Tất Cả" được chọn trong cả trạng thái và điều kiện
+
+            if tinhtrang_text == "TẤT CẢ" and dieukien == "TẤT CẢ":
+                self.loaddata_phieudattableview()
+
+                return
+
+            if dieukien == "SỐ ĐIỆN THOẠI" and sdt == "" and tinhtrang_text == "TẤT CẢ":
+
+                return
+            if tinhtrang_text != "TẤT CẢ" and sdt != "":
+                return
+            if dieukien == "SỐ ĐIỆN THOẠI" and sdt != "" and tinhtrang_text == "TẤT CẢ":
+                result = self.db.get_phieudat_by_sdt(sdt)
+
+
+            if tinhtrang_text != "TẤT CẢ" and dieukien == "TẤT CẢ" and sdt == "":
+
+                result = self.db.get_phieudat_by_trangthai(tinhtrang_text)
+            if tinhtrang_text != "TẤT CẢ" and dieukien != "TẤT CẢ" :
+                print(tinhtrang_text)
+                print(dieukien)
+                print(sdt)
+                result = self.db.get_phieudat_by_sdtandtrangthai(tinhtrang_text, sdt)
+                print(result)
+
+            # Đổ dữ liệu vào bảng
+
+            self.loaddata_phieudatbythamso(result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     def loadwindow(self):
@@ -138,7 +216,16 @@ class mainui(QMainWindow):
         self.loaddata_phieuthue()
         self.load_staff_data()
         self.loaddata_tablecustomer()
-        self.show_room_info()
+        self.refresh_show_room()
+
+    def refresh_show_room(self):
+        self.tinhtrang_output.setText("")
+        self.loaiphong_output.setText("")
+        self.ngaythue_output.setText("")
+        self.ngaytra_output.setText("")
+        model = self.khachthue_tableview.model()
+        if model is not None:
+            model.removeRows(0, model.rowCount())
 
     def cancel_nhanphong_dialog(self):
         index = self.phieudat_tableview.currentIndex()
@@ -191,9 +278,14 @@ class mainui(QMainWindow):
                 return
             maphieudat = model.index(row, 0).data()  # 0 là số thứ tự cột bạn muốn lấy
             from QLPhong.nhanphong_dialog import nhanphong_dialog
-            dialog = nhanphong_dialog(maphieudat)
-            dialog.exec_()
-            self.loadwindow()
+            try:
+                dialog = nhanphong_dialog(maphieudat)
+                result = dialog.exec_()
+                if result == QDialog.Accepted:
+                    self.loadwindow()
+            except Exception as e:
+                QMessageBox.critical(self, "Lỗi", f"Có lỗi xảy ra: {str(e)}")
+
 
         else :
             QMessageBox.warning(self,"CẢNH BÁO ","VUI LÒNG CHỌN PHIẾU ĐẶT ! ")
@@ -208,54 +300,122 @@ class mainui(QMainWindow):
             self.loaddata_phieudattableview()  # Hàm này bạn cần có để load lại bảng nhân viên
         except Exception as e:
             print("Lỗi khi mở dialog đặt phòng:", e)
+    def loaddata_phieudatbythamso(self,phieudat):
 
 
-    def loaddata_phieudattableview(self):
-
-        phieudat = self.db.get_phieudat()
-
-        # 2. Tạo model với số cột phù hợp
         self.model = QStandardItemModel()
         self.model.setHorizontalHeaderLabels([
             "Mã Phiếu Đặt", "Mã Phòng", "Ngày Đặt", "Ngày Nhận",
             "Ngày Trả", "Trạng Thái"
         ])
 
-        # 3. Đổ dữ liệu từ SQL vào model
         for row in phieudat:
-            row_items = [QStandardItem(str(cell)) for cell in row]
+            row_items = []
+            for i, cell in enumerate(row):
+                item = QStandardItem(str(cell))
+
+                # Nếu là cột "Trạng Thái"
+                if i == 5:
+                    if cell == "ĐÃ NHẬN":
+                        item.setBackground(QColor("lightgreen"))
+                    elif cell == "ĐÃ HỦY":
+                        item.setBackground(QColor("red"))
+                    elif cell == "ĐANG CHỜ":
+                        item.setBackground(QColor("#FFD700"))  # Màu vàng đậm (gold)
+
+                row_items.append(item)
+
             self.model.appendRow(row_items)
 
-        # 4. Gắn model vào QTableView
         self.phieudat_tableview.setModel(self.model)
 
-        # 5. Căn chỉnh cột cho đẹp
         header = self.phieudat_tableview.horizontalHeader()
         for column in range(self.model.columnCount()):
             header.setSectionResizeMode(column, QHeaderView.Stretch)
 
+    def loaddata_phieudattableview(self):
 
+
+        phieudat = self.db.get_phieudat()
+
+        self.model = QStandardItemModel()
+        self.model.setHorizontalHeaderLabels([
+            "Mã Phiếu Đặt", "Mã Phòng", "Ngày Đặt", "Ngày Nhận",
+            "Ngày Trả", "Trạng Thái"
+        ])
+
+        for row in phieudat:
+            row_items = []
+            for i, cell in enumerate(row):
+                item = QStandardItem(str(cell))
+
+                # Nếu là cột "Trạng Thái"
+                if i == 5:
+                    if cell == "ĐÃ NHẬN":
+                        item.setBackground(QColor("lightgreen"))
+                    elif cell == "ĐÃ HỦY":
+                        item.setBackground(QColor("red"))
+                    elif cell == "ĐANG CHỜ":
+                        item.setBackground(QColor("#FFD700"))  # Màu vàng đậm (gold)
+
+                row_items.append(item)
+
+            self.model.appendRow(row_items)
+
+        self.phieudat_tableview.setModel(self.model)
+
+        header = self.phieudat_tableview.horizontalHeader()
+        for column in range(self.model.columnCount()):
+            header.setSectionResizeMode(column, QHeaderView.Stretch)
 
 ###############################################################################################
-                                    #đặt phòng
-
-
+                                    #phiếu thuê
+    def update_input_makh(self):
+        dieukien = self.loc_phieuthue.currentText()  # Lấy giá trị đang chọn trong combobox
+        if dieukien != "TẤT CẢ":
+            self.loc_inputphieuthue.setDisabled(False)  # Nếu không phải TẤT CẢ thì disable
+        else:
+            self.loc_inputphieuthue.setDisabled(True)  # Nếu là TẤT CẢ thì enable
     def search_tablephieuthue(self):
 
-        if  self.loc_phieuthue.currentText()=="Tất Cả":
-            self.loaddata_phieuthue()
-        else :
-            self.close_table()
-            maphong=self.loc_inputphieuthue.text()
-            phieuthue = self.db.find_phieuthue(maphong)
-            for row in phieuthue:
-                row_items = [QStandardItem(str(cell)) for cell in row]
-                self.model.appendRow(row_items)
-            if(maphong==""):
-                self.close_table()
 
+        # Xóa dữ liệu cũ trong bảng
+        if not hasattr(self, 'model'):  # Kiểm tra xem self.model đã được khởi tạo chưa
+            self.model = QStandardItemModel()  # Khởi tạo nếu chưa có
+
+        self.model.removeRows(0, self.model.rowCount())
+
+
+        # Lấy giá trị từ các widget giao diện
+        tinhtrang_text = self.loc_phieuthue2.currentText()  # Lấy trạng thái từ combobox1
+        dieukien = self.loc_phieuthue.currentText()  # Lấy điều kiện từ combobox2
+        makh = self.loc_inputphieuthue.text().strip()  # Lấy giá trị từ lineedit
+
+        # Kiểm tra nếu "Tất Cả" được chọn trong cả trạng thái và điều kiện
+        if tinhtrang_text == "TẤT CẢ" and dieukien == "TẤT CẢ":
+            self.loaddata_phieuthue()
+            return
+
+
+        if dieukien == "MÃ KHÁCH HÀNG" and makh == "" and tinhtrang_text=="TẤT CẢ":
+            return
+        if tinhtrang_text != "TẤT CẢ" and makh != "":
+            return
+        if dieukien == "MÃ KHÁCH HÀNG" and makh != ""and tinhtrang_text=="TẤT CẢ":
+            result = self.db.get_phieuthue_by_makh(makh)
+        if tinhtrang_text!="" and dieukien=="TẤT CẢ" and makh=="" :
+            result=self.db.get_phieuthue_by_tinhtrang(tinhtrang_text)
+        if(tinhtrang_text!="TẤT CẢ" and dieukien=="MÃ KHÁCH HÀNG"  ):
+            result=self.db.get_phieuthue_by_makhandtinhtrang(tinhtrang_text,makh)
+
+        # Đổ dữ liệu vào bảng
+
+
+
+        self.loaddata_phieuthuebangthamso(result)
 
     def checkout(self, maphong):
+
         # Lấy phiếu thuê đang hoạt động của phòng này
         if maphong=="":
             QMessageBox.warning(self,"CẢNH BÁO","VUI LÒNG CHỌN PHÒNG MUỐN TRẢ ")
@@ -297,34 +457,66 @@ class mainui(QMainWindow):
         self.loaddata_tablecustomer()
         self.loaddata_phieuthue()
 
-    def loaddata_phieuthue(self):
-        phieuthue = self.db.get_phieuthue()
-
-        # 2. Tạo model với số cột phù hợp
+    def loaddata_phieuthuebangthamso(self,phieuthue):
         self.model = QStandardItemModel()
         self.model.setHorizontalHeaderLabels([
             "MÃ PHIẾU THUÊ", "MÃ PHÒNG", 'NGÀY NHẬN', "NGÀY TRẢ", 'TÌNH TRẠNG'
         ])
 
-        # 3. Đổ dữ liệu từ SQL vào model
         for row in phieuthue:
             row_items = []
-            for cell in row:
+            for i, cell in enumerate(row):
                 item = QStandardItem(str(cell))
-                item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Loại bỏ quyền chỉnh sửa
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Không cho chỉnh sửa
+
+                # cột "TÌNH TRẠNG"
+                if i == 4:
+                    if cell == "ĐÃ TRẢ":
+                        item.setBackground(QColor("#90EE90"))  # Màu xanh lá nhạt
+
+
                 row_items.append(item)
+
             self.model.appendRow(row_items)
 
-        # 4. Gắn model vào QTableView
         self.phieuthue_tableview.setModel(self.model)
 
-        # 5. Căn chỉnh cột cho đẹp
+        header = self.phieuthue_tableview.horizontalHeader()
+        for column in range(self.model.columnCount()):
+            header.setSectionResizeMode(column, QHeaderView.Stretch)
+
+    def loaddata_phieuthue(self):
+        phieuthue = self.db.get_phieuthue()
+
+        self.model = QStandardItemModel()
+        self.model.setHorizontalHeaderLabels([
+            "MÃ PHIẾU THUÊ", "MÃ PHÒNG", 'NGÀY NHẬN', "NGÀY TRẢ", 'TÌNH TRẠNG'
+        ])
+
+        for row in phieuthue:
+            row_items = []
+            for i, cell in enumerate(row):
+                item = QStandardItem(str(cell))
+                item.setFlags(item.flags() & ~Qt.ItemIsEditable)  # Không cho chỉnh sửa
+
+                # cột "TÌNH TRẠNG"
+                if i == 4:
+                    if cell == "ĐÃ TRẢ":
+                        item.setBackground(QColor("#90EE90"))  # Màu xanh lá nhạt
+
+
+                row_items.append(item)
+
+            self.model.appendRow(row_items)
+
+        self.phieuthue_tableview.setModel(self.model)
+
         header = self.phieuthue_tableview.horizontalHeader()
         for column in range(self.model.columnCount()):
             header.setSectionResizeMode(column, QHeaderView.Stretch)
 
     #############################################################################################
-                                    #QUẢN LÍ PHÒNG
+                                    #phòng
 
     def search_room(self):
         loaiphong_selected = self.locloaiphong_combobox.currentText()
@@ -604,17 +796,15 @@ class mainui(QMainWindow):
         # Thiết lập số cột
         self.khachthue_tableview.setColumnCount(2)
 
-        # Thiết lập tiêu đề cột
+
         self.khachthue_tableview.setHorizontalHeaderLabels(["Mã Khách Hàng", "Tên Khách Hàng"])
 
-        # Thiết lập chế độ kéo dãn cho các cột để chia đều không gian bảng
+
         header = self.khachthue_tableview.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
 
-        # Hoặc nếu bạn muốn cột đầu hẹp hơn và cột thứ hai rộng hơn:
-        # header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)  # Cột 1 tự động điều chỉnh theo nội dung
-        # header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)  # Cột 2 chiếm phần còn lại
+
     def show_room_info(self, maphong):
 
         # Tìm phòng theo mã
@@ -866,51 +1056,9 @@ class mainui(QMainWindow):
             QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn khách hàng muốn sửa !")
             return
 
-    def open_edituserdialog(self, username, password):
-        try:
-
-            from QLKH.dialog_edituser import dialog_edituser
-            dlg = dialog_edituser(username, password)
-            dlg.update_completed.connect(self.logout_fast)
-
-
-            dlg.exec_()  # Mở dialog sửa user
-        except Exception as e:
-            print("Lỗi khi mở dialog sửa user:", e)
 
 
 
-
-    def logout(self):
-        from login import loginui
-        reply = QMessageBox.question(
-            self, "Xác nhận đăng xuất",
-            "Bạn có chắc chắn muốn đăng xuất?",
-            QMessageBox.Yes | QMessageBox.No
-        )
-
-        if reply == QMessageBox.Yes:
-
-            msg_box = QMessageBox(self)
-            msg_box.setWindowTitle("Thông báo")
-            msg_box.setText("Bạn đã đăng xuất thành công.")
-            msg_box.setIcon(QMessageBox.Information)
-            msg_box.exec_()
-
-            # Ẩn cửa sổ chính và có thể hiện lại Login ở đây
-            self.hide()
-            self.login_window = QtWidgets.QMainWindow()
-            self.login_ui = loginui()
-            self.login_ui.setupUi(self.login_window)
-            self.login_window.show()
-
-    def logout_fast(self):
-        from login import loginui
-        self.hide()
-        self.login_window = QtWidgets.QMainWindow()
-        self.login_ui = loginui()
-        self.login_ui.setupUi(self.login_window)
-        self.login_window.show()
 
 
 
@@ -1051,6 +1199,65 @@ class mainui(QMainWindow):
                 QMessageBox.information(self, "Thành công", "Đã xóa nhân viên thành công!")
             else:
                 QMessageBox.critical(self, "Lỗi", "Không thể xóa nhân viên.")
+
+
+
+
+
+
+
+    def open_edituserdialog(self, username, password):
+        try:
+
+            from QLKH.dialog_edituser import dialog_edituser
+            dlg = dialog_edituser(username, password)
+            dlg.update_completed.connect(self.logout_fast)
+
+
+            dlg.exec_()  # Mở dialog sửa user
+        except Exception as e:
+            print("Lỗi khi mở dialog sửa user:", e)
+
+
+
+
+    def logout(self):
+        from login import loginui
+        reply = QMessageBox.question(
+            self, "Xác nhận đăng xuất",
+            "Bạn có chắc chắn muốn đăng xuất?",
+            QMessageBox.Yes | QMessageBox.No
+        )
+
+        if reply == QMessageBox.Yes:
+
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle("Thông báo")
+            msg_box.setText("Bạn đã đăng xuất thành công.")
+            msg_box.setIcon(QMessageBox.Information)
+            msg_box.exec_()
+
+            # Ẩn cửa sổ chính và có thể hiện lại Login ở đây
+            self.hide()
+            self.login_window = QtWidgets.QMainWindow()
+            self.login_ui = loginui()
+            self.login_ui.setupUi(self.login_window)
+            self.login_window.show()
+
+    def logout_fast(self):
+        from login import loginui
+        self.hide()
+        self.login_window = QtWidgets.QMainWindow()
+        self.login_ui = loginui()
+        self.login_ui.setupUi(self.login_window)
+        self.login_window.show()
+
+    def center_window(self):
+        frame_geometry = self.frameGeometry()
+        screen_center = QtWidgets.QDesktopWidget().availableGeometry().center()
+        frame_geometry.moveCenter(screen_center)
+        self.move(frame_geometry.topLeft())
+
 
 if __name__ == '__main__':
     app = QApplication([])

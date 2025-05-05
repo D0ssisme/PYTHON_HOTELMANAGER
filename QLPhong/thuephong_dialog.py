@@ -43,7 +43,6 @@ class thuephong_dialog(QDialog):  # ❗ Kế thừa QDialog
         self.danhsachkhachthue_tableview.setModel(self.model)
         self.danhsachkhachthue_tableview.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.danhsachkhachthue_tableview.setSelectionBehavior(QAbstractItemView.SelectRows)
-
         self.ngaynhan_datetime.setDateTime(QDateTime.currentDateTime())  # Mặc định là thời gian hiện tại
         self.ngaynhan_datetime.setDisplayFormat("yyyy-MM-dd HH:mm:ss")  # Hiển thị theo định dạng Ngày - Giờ
         self.ngaynhan_datetime.setCalendarPopup(True)  # Cho phép hiển thị popup lịch
@@ -84,8 +83,7 @@ class thuephong_dialog(QDialog):  # ❗ Kế thừa QDialog
                 QMessageBox.warning(self, "Lỗi", f"Không thể thêm khách hàng có mã {makh}. Dừng quá trình.")
                 return
 
-        # Sau khi thêm hết khách hàng, cập nhật trạng thái phòng
-        # Tạo mã phiếu thuê mới (có thể sinh ngẫu nhiên hoặc tự động)
+
         maphieuthue = self.db.autocreate_maphieuthue()
 
         # Tạo phiếu thuê
@@ -105,17 +103,12 @@ class thuephong_dialog(QDialog):  # ❗ Kế thừa QDialog
         self.close()
 
     def delete_customer_inform(self):
-        # Lấy chỉ số dòng được chọn
+
         selected_row = self.danhsachkhachthue_tableview.selectionModel().selectedRows()
 
         if selected_row:
-            # Lấy chỉ số dòng từ selectedRow
             row = selected_row[0].row()
-
-            # Xóa dòng khỏi model
             self.model.removeRow(row)
-
-            # Thông báo thành công (tuỳ chọn)
             QMessageBox.information(self, "Thông báo", "Xóa khách hàng thành công!")
         else:
             QMessageBox.warning(self, "Cảnh báo", "Vui lòng chọn một dòng để xóa!")
@@ -123,9 +116,9 @@ class thuephong_dialog(QDialog):  # ❗ Kế thừa QDialog
     def add_customer_inform(self):
         makh = self.makh_input.text()
 
-        # Nếu không có mã khách hàng, tự động tạo mã mới từ cơ sở dữ liệu
+
         if not makh:
-            makh = self.db.autocreat_new_makhachhang()  # Hàm tự tạo mã khách hàng mới từ cơ sở dữ liệu
+            makh = self.db.autocreat_new_makhachhang()
         if self.db.check_makhachhang_exists(makh) or self.is_makh_in_table(makh):
             QMessageBox.warning(self, "Cảnh báo", "Mã khách hàng đã tồn tại !")
             return
@@ -138,14 +131,13 @@ class thuephong_dialog(QDialog):  # ❗ Kế thừa QDialog
         diachi = self.diachi_input.text()
 
 
-        # Lấy giá trị ngày nhận và ngày trả dưới dạng chuỗi
         ngaynhan = self.ngaynhan_datetime.dateTime().toString("yyyy-MM-dd HH:mm:ss")
         ngaytra = self.ngaytra_datetime.dateTime().toString("yyyy-MM-dd HH:mm:ss")
         if not hoten or not quoctich or not cccd or not sdt or not diachi :
             QMessageBox.warning(self,"CẢNH BÁO","BẠN VUI LÒNG NHẬP ĐẦY ĐỦ THÔNG TIN!")
             return
 
-        # Tạo các item để thêm vào bảng
+
         items = [
             QStandardItem(makh),
             QStandardItem(hoten),
@@ -157,26 +149,21 @@ class thuephong_dialog(QDialog):  # ❗ Kế thừa QDialog
             QStandardItem(self.maphong),
         ]
 
-        # Thêm vào bảng
-        self.model.appendRow(items)
 
-        # Reset tất cả các ô nhập liệu sau khi thêm thành công
+        self.model.appendRow(items)
         self.makh_input.clear()
         self.hoten_input.clear()
-        self.gioitinh_combobox.setCurrentIndex(0)  # Set lại giá trị mặc định nếu cần
-        self.quoctich_combobox.setCurrentIndex(0)  # Set lại giá trị mặc định nếu cần
+        self.gioitinh_combobox.setCurrentIndex(0)
+        self.quoctich_combobox.setCurrentIndex(0)
         self.cccd_input.clear()
         self.sdt_input.clear()
         self.diachi_input.clear()
-        self.ngaynhan_datetime.setDateTime(QDateTime.currentDateTime())  # Reset ngày giờ nhận
-        self.ngaytra_datetime.setDateTime(QDateTime.currentDateTime())  # Reset ngày giờ trả
+        self.ngaynhan_datetime.setDateTime(QDateTime.currentDateTime())
+        self.ngaytra_datetime.setDateTime(QDateTime.currentDateTime())
 
-        # Debug (tuỳ chọn)
+
         print(f"{makh=}, {hoten=}, {gioitinh=}, {quoctich=}, {cccd=}, {sdt=}, {diachi=}, {ngaynhan=}, {ngaytra=}")
         print(self.maphong)
-
-
-
 
 
     def is_makh_in_table(self, makh):

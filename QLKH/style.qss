@@ -204,3 +204,31 @@ QPushButton#loc_btn {
 }
 
 
+QPushButton#locphieuthue_btn {
+
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    min-width: 100px;
+    min-height: 35x;
+    max-width: 100px;
+    max-height: 35px;
+
+    background-color: #99FFFF;
+}
+
+QPushButton#locphieudat_btn {
+
+    border: none;
+    border-radius: 0px;
+    padding: 0px;
+    min-width: 100px;
+    min-height: 35x;
+    max-width: 100px;
+    max-height: 35px;
+
+    background-color: #99FFFF;
+}
+
+
+
