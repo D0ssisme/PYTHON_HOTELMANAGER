@@ -84,8 +84,8 @@ class datphong_dialog(QDialog):  # ❗ Kế thừa QDialog
             "Ảnh (*.png *.jpg *.jpeg *.bmp)"
         )
 
-        if len(file_paths) > 3:
-            file_paths = file_paths[:3]
+        if len(file_paths) > 5:
+            file_paths = file_paths[:5]
 
         # Gán model nếu chưa có
         if not hasattr(self, "linkimg_model"):

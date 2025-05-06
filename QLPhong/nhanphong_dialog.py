@@ -24,6 +24,13 @@ class nhanphong_dialog(QDialog):  # ❗ Kế thừa QDialog
         self.load_datatableview()
         self.agree_btn.clicked.connect(lambda : self.check_agreenhanphong(self.maphieudat))
         self.cancel_btn.clicked.connect(self.close)
+        self.maphieudat_input.setReadOnly(True)
+        self.ngaynhan_input.setReadOnly(True)
+        self.ngaytra_input.setReadOnly(True)
+        self.maphong_input.setReadOnly(True)
+
+
+
 
 
 
@@ -55,11 +62,10 @@ class nhanphong_dialog(QDialog):  # ❗ Kế thừa QDialog
             QTableView {
                 border: none;
                 outline: none;
-                selection-background-color: #d0f0ff;
+        
             }
             QHeaderView::section {
-                background-color: #007acc;
-                color: white;
+           
                 padding: 4px;
                 font-weight: bold;
                 border: none;

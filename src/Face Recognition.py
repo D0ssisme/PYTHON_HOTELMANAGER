@@ -48,6 +48,7 @@ extract_faces(r"C:\PYTHON\dataset")
 
 
 
+
 #BƯỚC 2 DÙNG FACENET TRÍCH XUẤT RA VECTOR ĐẶC TRƯNG TỪ CÁC ẢNH ĐÃ QUA XỬ LÍ BẰNG MTCNN VÀ LƯU NÓ VÀO FILE ĐUÔI NPZ  CÙNG LABEL ĐỂ ĐƯA VÀO SVM TRAIN
 
 model = load_model("C:/PYTHON/facenet_model/facenet_keras_2024.h5")

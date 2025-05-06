@@ -1,2 +1,6 @@
 /facenet_env_312/
 /arcFACE/
+src/svm_face_recognition.pkl
+/src/svm_face_recognition.pkl
+/src/faces_embeddings.npz
+src/faces_embeddings.npz

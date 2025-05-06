@@ -17,7 +17,7 @@ from PyQt5.QtGui import QIcon
 
 
 from QLNV.database_staff import DataBaseStaff
-
+from QLHoaDon.database_bill import DataBaseBill
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QAbstractItemView
 
@@ -32,6 +32,7 @@ class mainui(QMainWindow):
         self.applyStylesheet()
         self.db = DataBase()
         self.db_staff = DataBaseStaff()
+        self.db_bill = DataBaseBill()
         self.db.connection = None
         self.db.connect()
         self.setFixedSize(1800, 800)
@@ -64,6 +65,11 @@ class mainui(QMainWindow):
         self.username_input.setText(username)
         self.selectoption_combobox.addItems(["Tất Cả", "mã khách hàng"])
         self.loc_phieuthue.addItems(["TẤT CẢ", "MÃ KHÁCH HÀNG"])
+
+ ####################################################################
+        #Hóa Đơn
+        self.load_bill_data()
+        self.load_bill_table_style()
 ##############################################################################
                     #khách hàng
         self.addcustomer_button.clicked.connect(self.open_addcustomer_dialog)
@@ -136,11 +142,11 @@ class mainui(QMainWindow):
 ######################################################
     #phiếu đặt
     def update_input_sdt(self):
-        dieukien = self.locphieudat_combobox.currentText()  # Lấy giá trị đang chọn trong combobox
+        dieukien = self.locphieudat_combobox.currentText()
         if dieukien != "TẤT CẢ":
-            self.locphieudat_input.setDisabled(False)  # Nếu không phải TẤT CẢ thì disable
+            self.locphieudat_input.setDisabled(False)
         else:
-            self.locphieudat_input.setDisabled(True)  # Nếu là TẤT CẢ thì enable
+            self.locphieudat_input.setDisabled(True)
     def search_tablephieudat(self):
 
 
@@ -150,12 +156,12 @@ class mainui(QMainWindow):
 
             self.model.removeRows(0, self.model.rowCount())
 
-            # Lấy giá trị từ các widget giao diện
-            tinhtrang_text = self.locphieudat_combobox2.currentText()  # Lấy trạng thái từ combobox1
-            dieukien = self.locphieudat_combobox.currentText()  # Lấy điều kiện từ combobox2
-            sdt = self.locphieudat_input.text().strip()  # Lấy giá trị từ lineedit
 
-            # Kiểm tra nếu "Tất Cả" được chọn trong cả trạng thái và điều kiện
+            tinhtrang_text = self.locphieudat_combobox2.currentText()
+            dieukien = self.locphieudat_combobox.currentText()
+            sdt = self.locphieudat_input.text().strip()
+
+
 
             if tinhtrang_text == "TẤT CẢ" and dieukien == "TẤT CẢ":
                 self.loaddata_phieudattableview()
@@ -188,28 +194,6 @@ class mainui(QMainWindow):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def loadwindow(self):
         self.load_rooms()
         self.loaddata_phieudattableview()
@@ -217,6 +201,7 @@ class mainui(QMainWindow):
         self.load_staff_data()
         self.loaddata_tablecustomer()
         self.refresh_show_room()
+
 
     def refresh_show_room(self):
         self.tinhtrang_output.setText("")
@@ -226,6 +211,7 @@ class mainui(QMainWindow):
         model = self.khachthue_tableview.model()
         if model is not None:
             model.removeRows(0, model.rowCount())
+
 
     def cancel_nhanphong_dialog(self):
         index = self.phieudat_tableview.currentIndex()
@@ -502,7 +488,7 @@ class mainui(QMainWindow):
                 # cột "TÌNH TRẠNG"
                 if i == 4:
                     if cell == "ĐÃ TRẢ":
-                        item.setBackground(QColor("#90EE90"))  # Màu xanh lá nhạt
+                        item.setBackground(QColor("#90EE90"))
 
 
                 row_items.append(item)
@@ -532,9 +518,9 @@ class mainui(QMainWindow):
             if match_loaiphong and match_trangthai:
                 filtered_rooms.append(room)
 
-        self.display_rooms(filtered_rooms)
+        self.load_rooms_from_search(filtered_rooms)
 
-    def display_rooms(self, room_data):
+    def load_rooms_from_search(self, room_data):
         layout = self.room_layout.layout()
         if layout is None:
             return
@@ -545,7 +531,6 @@ class mainui(QMainWindow):
             if widget:
                 widget.setParent(None)
 
-        # Thêm các nút mới từ room_data
         row = 0
         col = 0
         for room in room_data:
@@ -837,27 +822,24 @@ class mainui(QMainWindow):
                 # Thiết lập số hàng bằng số lượng khách hàng
                 self.khachthue_tableview.setRowCount(len(chitietphieunhap))
 
-                # Hiển thị tất cả khách hàng vào bảng
+
                 for row, ctpn_tuple in enumerate(chitietphieunhap):
                     # Lấy thông tin khách thuê phòng
                     makh, hoten, ngaynhan, ngaytra = ctpn_tuple
 
-                    # In ra để kiểm tra
+
                     print(f"Đang thêm khách hàng: {makh} - {hoten}")
 
                     # Thêm vào bảng
                     self.khachthue_tableview.setItem(row, 0, QtWidgets.QTableWidgetItem(makh))
                     self.khachthue_tableview.setItem(row, 1, QtWidgets.QTableWidgetItem(hoten))
 
-                # Hiển thị thông tin ngày thuê và ngày trả từ khách hàng đầu tiên
-                # (hoặc bạn có thể thay đổi logic này nếu cần)
                 first_customer = chitietphieunhap[0]
                 makh, hoten, ngaynhan, ngaytra = first_customer
 
                 self.ngaythue_output.setText(f"{ngaynhan.strftime('%d/%m/%Y %H:%M')}")
                 self.ngaytra_output.setText(f"{ngaytra.strftime('%d/%m/%Y %H:%M')}")
 
-                # Thiết lập chế độ kéo dãn cho các cột
                 header = self.khachthue_tableview.horizontalHeader()
                 header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
                 header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
@@ -1146,6 +1128,33 @@ class mainui(QMainWindow):
         header = self.staff_table.horizontalHeader()
         for column in range(self.staff_model.columnCount()):
             header.setSectionResizeMode(column, QHeaderView.Stretch)
+        # 6. Style cho bảng (ẩn border và làm tiêu đề màu xanh)
+        self.staff_table.setStyleSheet("""
+            QTableView {
+                border: none;
+         
+         
+            }
+        """)
+
+        self.staff_table.horizontalHeader().setStyleSheet("""
+            QHeaderView::section {
+                background-color: #2196F3;
+       
+                font-weight: bold;
+                border: none;
+                padding: 5px;
+            }
+        """)
+        self.staff_table.horizontalHeader().setStyleSheet("""
+            QHeaderView::section {
+                background-color: #2196F3;   /* Màu nền xanh */
+                color: white;                /* Màu chữ trắng */
+                font-weight: bold;
+                border: none;
+                padding: 5px;
+            }
+        """)
 
     def open_addstaff_dialog(self):
         try:
@@ -1218,6 +1227,56 @@ class mainui(QMainWindow):
         except Exception as e:
             print("Lỗi khi mở dialog sửa user:", e)
 
+###################################################################
+            #HÓA ĐƠN
+
+    def load_bill_data(self):
+        # 1. Kết nối và lấy dữ liệu
+        bills = self.db_bill.get_bill()
+
+        # 2. Tạo model với số cột phù hợp
+        self.bill_model = QStandardItemModel()
+        self.bill_model.setHorizontalHeaderLabels([
+            "Mã HĐ", "Mã Thuê Phòng", "Mã Nhân Viên", "Ngày Lập", "Tổng Tiền"
+        ])
+
+        # 3. Đổ dữ liệu từ SQL vào model
+        for row in bills:
+            row_items = []
+            for idx, cell in enumerate(row):
+                if idx == 4:  # Cột thứ 5, tức là "Tổng Tiền"
+                    formatted_money = "{:,.0f}".format(cell).replace(",", ".")
+                    item = QStandardItem(formatted_money)
+                else:
+                    item = QStandardItem(str(cell))
+                row_items.append(item)
+            self.bill_model.appendRow(row_items)
+
+        # 4. Gắn model vào QTableView
+        self.bill_table.setModel(self.bill_model)
+        self.bill_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.bill_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.bill_table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.bill_table.verticalHeader().setVisible(False)
+
+        # 5. Căn chỉnh cột
+        header = self.bill_table.horizontalHeader()
+        for column in range(self.bill_model.columnCount()):
+            header.setSectionResizeMode(column, QHeaderView.Stretch)
+
+    def load_bill_table_style(self):
+        # Đảm bảo đường dẫn đúng: thư mục QLNV, file style_staff.qss
+        with open("QLHoaDon/style_bill.qss", "r", encoding="utf-8") as file:
+            style = file.read()
+            self.bill_table.horizontalHeader().setStyleSheet(style)
+
+
+
+
+
+
+
+
 
 
 
@@ -1243,6 +1302,8 @@ class mainui(QMainWindow):
             self.login_ui = loginui()
             self.login_ui.setupUi(self.login_window)
             self.login_window.show()
+
+
 
     def logout_fast(self):
         from login import loginui
