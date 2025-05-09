@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b66e4463-e4d6-4e7f-ae9b-32e359650191" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2tW2HUSTN8joCjJsqVONXqknez3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Python.Face Recognition.executor&quot;: &quot;Run&quot;,
+    &quot;Python.QLKH.executor&quot;: &quot;Run&quot;,
+    &quot;Python.QLP.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Trangchu.executor&quot;: &quot;Run&quot;,
+    &quot;Python.aa.executor&quot;: &quot;Run&quot;,
+    &quot;Python.addcustomer_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.addroom_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.addstaff_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.arcface.executor&quot;: &quot;Run&quot;,
+    &quot;Python.business.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cc.executor&quot;: &quot;Run&quot;,
+    &quot;Python.checkin_module.executor&quot;: &quot;Run&quot;,
+    &quot;Python.checkinface.executor&quot;: &quot;Run&quot;,
+    &quot;Python.data.executor&quot;: &quot;Run&quot;,
+    &quot;Python.database.executor&quot;: &quot;Run&quot;,
+    &quot;Python.database_staff.executor&quot;: &quot;Run&quot;,
+    &quot;Python.datphong_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.detailcustomer_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.dialog_edituser.executor&quot;: &quot;Run&quot;,
+    &quot;Python.editcustomer_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.editroom_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.editstaff_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.file.executor&quot;: &quot;Run&quot;,
+    &quot;Python.formdatphong.executor&quot;: &quot;Run&quot;,
+    &quot;Python.homepage.executor&quot;: &quot;Run&quot;,
+    &quot;Python.login.executor&quot;: &quot;Run&quot;,
+    &quot;Python.login1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.loginform.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.nhanphong_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.output.executor&quot;: &quot;Run&quot;,
+    &quot;Python.parse.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pp.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qlkh.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test666.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testfacedetected.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testfile.executor&quot;: &quot;Run&quot;,
+    &quot;Python.testtest.executor&quot;: &quot;Run&quot;,
+    &quot;Python.thuephong_dialog.executor&quot;: &quot;Run&quot;,
+    &quot;Python.trainmodel.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/nguye&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\PYTHON" />
+      <recent name="C:\PYTHON\src" />
+      <recent name="C:\PYTHON\QLKH" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="homepage" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="PYTHON" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\PYTHON\homepage.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-fc1d50d2d915-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.24978.54" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b66e4463-e4d6-4e7f-ae9b-32e359650191" name="Changes" comment="" />
+      <created>1740453421563</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1740453421563</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.qss" />
+  </component>
+</project>
