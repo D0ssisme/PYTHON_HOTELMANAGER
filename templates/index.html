@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đặt phòng khách sạn</title>
+</head>
+<body>
+    <h2>Form Đặt Phòng</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li style="color: {{ 'red' if category == 'error' else 'green' }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('submit') }}" method="post" enctype="multipart/form-data">
+        <label for="name">Họ tên:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="gender">Giới tính:</label><br>
+        <select id="gender" name="gender" required>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+            <option value="Khác">Khác</option>
+        </select><br><br>
+
+        <label for="nationality">Quốc tịch:</label><br>
+        <input type="text" id="nationality" name="nationality" required><br><br>
+
+        <label for="cccd">CCCD:</label><br>
+        <input type="text" id="cccd" name="cccd" required><br><br>
+
+        <label for="phone">SĐT:</label><br>
+        <input type="text" id="phone" name="phone" required><br><br>
+
+        <label for="phone">Địa chỉ:</label><br>
+        <input type="text" id="diachi" name="diachi" required><br><br>
+
+        <label for="check_in_date">Ngày nhận phòng:</label><br>
+        <input type="date" id="check_in_date" name="check_in_date" required><br><br>
+
+        <label for="check_out_date">Ngày trả phòng:</label><br>
+        <input type="date" id="check_out_date" name="check_out_date" required><br><br>
+
+        <label for="room_id">Mã phòng:</label><br>
+        <input type="text" id="room_id" name="room_id" required><br><br>
+
+        <label for="contact_info">Thông tin liên hệ:</label><br>
+        <input type="text" id="contact_info" name="contact_info" required><br><br>
+
+        <label for="photo">Ảnh khách hàng (tùy chọn):</label><br>
+        <input type="file" id="photo" name="photo"><br><br>
+
+        <button type="submit">Đặt phòng</button>
+    </form>
+</body>
+</html>
